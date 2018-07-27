@@ -27,7 +27,8 @@ public class OrderSender {
     private JmsTemplate jmsTemplate;
     private BrokerMessage bm = new BrokerMessage(true, 10, 10, "GOOG");
 
-    @Scheduled(fixedRate = 1000)
+
+
     public void sendWrapper() {
         send(bm);
     }
