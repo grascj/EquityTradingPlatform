@@ -47,6 +47,6 @@ public class OrderSender {
                 return msg;
             }
         };
-        jmsTemplate.send("OrderBroker ", messageCreator);
+        jmsTemplate.send("OrderBroker", messageCreator);
     }
 }
