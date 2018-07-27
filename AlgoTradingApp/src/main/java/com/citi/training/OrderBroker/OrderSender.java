@@ -8,9 +8,13 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 
+import com.citi.training.entities.BrokerMessage;
+import org.apache.activemq.broker.Broker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.ComponentScan;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.jms.core.JmsTemplate;
 
 import org.springframework.jms.core.MessageCreator;
@@ -25,22 +29,20 @@ public class OrderSender {
 
     @Autowired
     private JmsTemplate jmsTemplate;
+    private BrokerMessage bm = new BrokerMessage(true, 10, 10, "GOOG");
 
     @Scheduled(fixedRate = 1000)
-    public void send() {
+    public void sendWrapper() {
+        send(bm);
+    }
+
+
+    public void send(BrokerMessage brokerMsg) {
         System.out.println("Sending a transaction.");
-        // Post message to the message queue named "OrderTransactionQueue"
         MessageCreator messageCreator = new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
-                Message msg = session.createTextMessage("<trade>\n" +
-                        "<buy>true</buy>\n" +
-                        "<id>0</id>\n" +
-                        "<price>88.0</price>\n" +
-                        "<size>2000</size>\n" +
-                        "<stock>HON</stock>\n" +
-                        "<whenAsDate>2014-07-31T22:33:22.801-04:00</whenAsDate>\n" +
-                        "</trade>");
+                Message msg = session.createTextMessage(brokerMsg.toString());
                 msg.setJMSCorrelationID(UUID.randomUUID().toString());
                 return msg;
             }
