@@ -1,4 +1,4 @@
-package com.citi.training.feed;
+package com.citi.training.services;
 
 
 import com.citi.training.entities.MarketUpdate;
@@ -16,20 +16,14 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class MarketRecorder {
+public class MarketUpdateService {
 
     @Autowired
     MarketUpdateRepository marketUpdateRepository;
 
 
-    public List<MarketUpdate> parseFeedResponse(String resp, List<String> tickList){
-        Scanner respScanner = new Scanner(resp);
-        LocalDateTime timestamp = LocalDateTime.now();
-        return tickList.stream().map(x -> new MarketUpdate(timestamp, x, respScanner.nextDouble())).collect(Collectors.toList());
-    }
 
-
-    public void writeTickers(List<MarketUpdate> tickers) {
+    public void writeMarketUpdates(List<MarketUpdate> tickers) {
         marketUpdateRepository.save(tickers);
     }
 
