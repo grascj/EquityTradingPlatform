@@ -1,6 +1,8 @@
 package com.citi.training.OrderBroker;
 
 import com.citi.training.entities.BrokerMessage;
+import com.citi.training.services.BrokerMessageService;
+import com.citi.training.services.MarketUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,7 +36,8 @@ public class OrderReceiver {
      */
     @Autowired
     ConfigurableApplicationContext context;
-
+    @Autowired
+    BrokerMessageService brokerMessageService;
     /**
      * When you receive a message, print it out, then shut down the application.
      * Finally, clean up any ActiveMQ server stuff.
@@ -43,6 +46,7 @@ public class OrderReceiver {
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
         xmlToBrokerMessage(message);
+        brokerMessageService.writeBrokerMessage(xmlToBrokerMessage(message));
 
     }
 
