@@ -12,15 +12,28 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.List;
 
 @Service
 public class FeedReader {
 
     @Scheduled(fixedRate = 1000)
     public void pingFeed(){
+        String[] tickers = {"aapl", "goog", "msft", "brk-a", "nsc"};
+        String apiCall = "http://localhost:8085/quotes.csv?s=";
+        //build out API call
+        for(int i =0; i < tickers.length; i++) {
+            apiCall += tickers[i];
+            if(i < tickers.length - 1) {
+                apiCall += ",";
+            }
+        }
+        apiCall += "&f=p0";
+
+        //exec API call
         URL url = null;
         try {
-            url = new URL("http://localhost:8085/quotes.csv?s=goog&f=p0");
+            url = new URL(apiCall);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 
@@ -28,7 +41,7 @@ public class FeedReader {
             String inputLine;
             StringBuffer content = new StringBuffer();
             while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
+                content.append(inputLine + " ");
             }
             in.close();
             con.disconnect();
