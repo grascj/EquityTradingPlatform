@@ -5,6 +5,7 @@ import com.citi.training.entities.MarketUpdate;
 import com.citi.training.misc.MarketInformation;
 import com.citi.training.services.MarketUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +31,31 @@ public class FeedProcessor {
     @Autowired
     MarketInformation marketInformation;
 
+
+    @Value("${financial.feed.url}")
+    String feedURL;
+
     @Scheduled(fixedRate = 1000)
     public void pingFeed(){
 
-        String apiCall = "http://localhost:8085/quotes.csv?s=";
+
         //build out API call
 
 
+
         //stream on a list is ordered
-        apiCall += marketInformation.getTickers().stream().reduce( (a, b) -> a + "," + b);
+        String target = feedURL + "?s=" + marketInformation.getTickers().stream().reduce( (a, b) -> a + "," + b).get();
 
         // p0 is just the prices ordered the same as the request
-        apiCall += "&f=p0";
+        target += "&f=p0";
 
         //exec API call
 
 
+
+
         try {
-            URL url = new URL(apiCall);
+            URL url = new URL(target);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));

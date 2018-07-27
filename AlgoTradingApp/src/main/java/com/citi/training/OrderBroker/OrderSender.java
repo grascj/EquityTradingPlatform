@@ -9,18 +9,14 @@ import javax.jms.Session;
 
 
 import com.citi.training.entities.BrokerMessage;
-import org.apache.activemq.broker.Broker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.ComponentScan;
 
-import org.springframework.context.event.EventListener;
 import org.springframework.jms.core.JmsTemplate;
 
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 
 @Service
