@@ -18,16 +18,9 @@ public class AnalysisExecutor {
     private TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer;
     private Map<Class, Analyzer> analyzerMap;
 
-
-
-
     public void execute(Strategy strategy) {
-        System.out.println(strategy.getClass());
         analyzerMap.get(strategy.getClass()).analyze(strategy);
     }
-
-
-
 
     @Autowired
     public AnalysisExecutor(BollingerBandsAnalyzer bollingerBandsAnalyzer, TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer) {

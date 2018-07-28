@@ -9,7 +9,6 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
     @Override
     public Action analyze(Strategy strat) {
-        System.out.println("bollinger");
         return null;
     }
 }

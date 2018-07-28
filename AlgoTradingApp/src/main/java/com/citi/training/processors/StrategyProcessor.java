@@ -32,11 +32,10 @@ public class StrategyProcessor {
     @Scheduled(fixedDelay = 5000)
     public void executeStrategies(){
 
-        //List<Strategy> li = new LinkedList<>();
-        //li.add(new BollingerBands("good", 1.1));
-        //li.add(new TwoMovingAverages("test", 10, 30));
-        //strategyService.writeStrategies(li);
-        System.out.println("EXECUTING STRATEGIES");
+//        List<Strategy> li = new LinkedList<>();
+//        li.add(new BollingerBands("goog", 1.1));
+//        li.add(new TwoMovingAverages("aapl", 10, 30));
+//        strategyService.writeStrategies(li);
         strategyService.getStrategies().stream().forEach(analysisExecutor::execute);
     }
 

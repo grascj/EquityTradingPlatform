@@ -28,4 +28,6 @@ public class StrategyService {
     }
 
 
+    public void writeStrategy(Strategy strategy) { strategyRepository.save(strategy); }
+
 }
