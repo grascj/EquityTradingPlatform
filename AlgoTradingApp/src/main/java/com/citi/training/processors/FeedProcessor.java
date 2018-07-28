@@ -1,4 +1,4 @@
-package com.citi.training.feed;
+package com.citi.training.processors;
 
 
 import com.citi.training.entities.MarketUpdate;
@@ -7,6 +7,7 @@ import com.citi.training.services.MarketUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -17,12 +18,11 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class FeedProcessor {
 
     @Autowired

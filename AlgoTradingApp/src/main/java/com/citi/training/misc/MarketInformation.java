@@ -1,6 +1,7 @@
 package com.citi.training.misc;
 
 
+import com.citi.training.entities.Strategy;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -10,6 +11,11 @@ import java.util.List;
 public class MarketInformation {
 
 
+    private static List<Strategy> strategies;
+
+    public static List<Strategy> getStrategies() {
+        return strategies;
+    }
 
     private static List<String> tickers = new LinkedList();
     static {

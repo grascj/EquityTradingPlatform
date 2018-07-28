@@ -63,11 +63,5 @@ public class MarketUpdateService {
     }
 
 
-    @Scheduled(fixedDelay = 10000)
-    public void test(){
-        System.out.println(movingAverage("goog", 10));
-    }
-
-
 
 }
