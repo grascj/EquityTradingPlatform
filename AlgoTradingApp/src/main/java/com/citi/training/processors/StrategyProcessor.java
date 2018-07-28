@@ -1,5 +1,6 @@
 package com.citi.training.processors;
 
+import com.citi.training.analysis.AnalysisExecutor;
 import com.citi.training.entities.BollingerBands;
 import com.citi.training.entities.Strategy;
 import com.citi.training.entities.TwoMovingAverages;
@@ -18,26 +19,25 @@ import java.util.List;
 @Component
 public class StrategyProcessor {
 
-
     @Autowired
-    MarketUpdateService marketUpdateService;
-
-    @Autowired
-    StrategyService strategyService;
+    AnalysisExecutor analysisExecutor;
 
     @Autowired
     MarketInformation marketInformation;
+
+    @Autowired
+    StrategyService strategyService;
 
 
     @Scheduled(fixedDelay = 5000)
     public void executeStrategies(){
 
-        List<Strategy> strat = new LinkedList<>();
-        strat.add(new TwoMovingAverages("goog",5,10));
-        strat.add(new BollingerBands("apl", 100.1));
-        strategyService.writeStrategies(strat);
-
-
+        //List<Strategy> li = new LinkedList<>();
+        //li.add(new BollingerBands("good", 1.1));
+        //li.add(new TwoMovingAverages("test", 10, 30));
+        //strategyService.writeStrategies(li);
+        System.out.println("EXECUTING STRATEGIES");
+        strategyService.getStrategies().stream().forEach(analysisExecutor::execute);
     }
 
 

@@ -23,5 +23,9 @@ public class StrategyService {
         strategyRepository.save(strategies);
     }
 
+    public List<Strategy> getStrategies() {
+        return strategyRepository.findAll();
+    }
+
 
 }

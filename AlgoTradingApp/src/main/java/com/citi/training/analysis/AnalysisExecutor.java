@@ -3,6 +3,7 @@ package com.citi.training.analysis;
 
 import com.citi.training.entities.BollingerBands;
 import com.citi.training.entities.Strategy;
+import com.citi.training.entities.TwoMovingAverages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,26 +14,25 @@ import java.util.Map;
 @Service
 public class AnalysisExecutor {
 
-    @Autowired
-    BollingerBandsAnalyzer bollingerBandsAnalyzer;
-
-    @Autowired
-    TwoMovingAverageAnalyzer twoMovingAverageAnalyzer;
-
-
-    Map<Class, Analyzer> analyzerMap;
+    private BollingerBandsAnalyzer bollingerBandsAnalyzer;
+    private TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer;
+    private Map<Class, Analyzer> analyzerMap;
 
 
 
 
     public void execute(Strategy strategy) {
+        System.out.println(strategy.getClass());
         analyzerMap.get(strategy.getClass()).analyze(strategy);
     }
-    
 
-    public AnalysisExecutor() {
+
+
+
+    @Autowired
+    public AnalysisExecutor(BollingerBandsAnalyzer bollingerBandsAnalyzer, TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer) {
         analyzerMap = new HashMap<>();
-        analyzerMap.put(BollingerBands.class,bollingerBandsAnalyzer);
-        analyzerMap.put(TwoMovingAverageAnalyzer.class,twoMovingAverageAnalyzer);
+        analyzerMap.put(BollingerBands.class, bollingerBandsAnalyzer);
+        analyzerMap.put(TwoMovingAverages.class, twoMovingAveragesAnalyzer);
     }
 }

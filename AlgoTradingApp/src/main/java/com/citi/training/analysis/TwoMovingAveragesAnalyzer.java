@@ -5,7 +5,7 @@ import com.citi.training.misc.Action;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TwoMovingAverageAnalyzer implements Analyzer {
+public class TwoMovingAveragesAnalyzer implements Analyzer {
     @Override
     public Action analyze(Strategy strat) {
         System.out.println("movingav");
