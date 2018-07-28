@@ -1,9 +1,7 @@
 package com.citi.training.services;
 
 
-import com.citi.training.entities.BrokerMessage;
-import com.citi.training.entities.MarketUpdate;
-import com.citi.training.entities.Strategy;
+import com.citi.training.entities.*;
 import com.citi.training.repositories.BrokerMessageRepository;
 
 import com.citi.training.repositories.StrategyRepository;

@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public abstract class Strategy {
     private String ticker;
 
-    public abstract Action analyzeMarket();
-
     public Strategy(String ticker) {
         this.ticker = ticker;
     }

@@ -12,10 +12,4 @@ public class BollingerBands extends Strategy {
         this.test = test;
     }
 
-    @Override
-    public Action analyzeMarket() {
-
-        System.out.println("bollinger band: test:" + test);
-        return Action.HOLD;
-    }
 }

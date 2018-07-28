@@ -36,7 +36,7 @@ public class StrategyProcessor {
         strat.add(new TwoMovingAverages("goog",5,10));
         strat.add(new BollingerBands("apl", 100.1));
         strategyService.writeStrategies(strat);
-        
+
 
     }
 

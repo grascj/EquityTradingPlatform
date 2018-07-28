@@ -11,12 +11,6 @@ public class TwoMovingAverages extends Strategy {
     private Integer shortAverageSeconds;
     private Integer longAverageSeconds;
 
-    @Override
-    public Action analyzeMarket() {
-        System.out.println("moving average: short:"+shortAverageSeconds + " long:"+ longAverageSeconds);
-        return Action.HOLD;
-    }
-
     public TwoMovingAverages(String ticker, Integer shortAverageSeconds, Integer longAverageSeconds) {
         super(ticker);
         this.shortAverageSeconds = shortAverageSeconds;
