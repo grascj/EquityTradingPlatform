@@ -1,16 +1,17 @@
 package com.citi.training.entities;
 
 
-import com.mongodb.BSONTimestampCodec;
-import org.bson.BSON;
-import org.bson.types.BSONTimestamp;
+
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+
 @Document
 public class MarketUpdate {
 
+    @Indexed
     private LocalDateTime timestamp;
     private String ticker;
     private Double price;
