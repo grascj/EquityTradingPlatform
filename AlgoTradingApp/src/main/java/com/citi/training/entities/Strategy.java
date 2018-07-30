@@ -11,8 +11,18 @@ public abstract class Strategy {
 
     @Id
     private ObjectId id;
-
     private String ticker;
+
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    private Integer amount;
 
     public Strategy(String ticker) {
         this.ticker = ticker;

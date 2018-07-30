@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@ComponentScan
 public class OrderSender {
 
     @Autowired

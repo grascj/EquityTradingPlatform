@@ -20,9 +20,7 @@ public class AnalysisExecutor {
     private Map<Class, Analyzer> analyzerMap;
 
     public Order execute(Strategy strategy) {
-        analyzerMap.get(strategy.getClass()).analyze(strategy);
-
-    return null;
+        return analyzerMap.get(strategy.getClass()).analyze(strategy);
     }
 
     @Autowired
