@@ -23,7 +23,7 @@ public class OrderBrokerTest {
                 "<stock>GOOG</stock>\n" +
                 "<whenAsDate>2014-07-31T22:33:22.801-04:00</whenAsDate>\n" +
                 "</trade>");
-        os.send(order);
+        //os.send(order);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class OrderBrokerTest {
     @Test
     public void ReceiveAllOrderTest() {
         Order order = new Order(true, 10, 12, "GOOG");
-        os.send(order);
+        //os.send(order);
     }
 
 
