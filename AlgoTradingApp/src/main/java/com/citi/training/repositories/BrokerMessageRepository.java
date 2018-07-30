@@ -1,9 +1,10 @@
 package com.citi.training.repositories;
 
 
+import com.citi.training.entities.Order;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface BrokerMessageRepository  extends MongoRepository<com.citi.training.entities.BrokerMessage, ObjectId> {
+public interface BrokerMessageRepository  extends MongoRepository<Order, ObjectId> {
 
 }
