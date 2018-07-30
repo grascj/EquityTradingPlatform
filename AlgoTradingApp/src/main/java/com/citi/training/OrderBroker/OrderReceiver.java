@@ -36,6 +36,7 @@ public class OrderReceiver {
     @JmsListener(destination = "OrderBroker_Reply", containerFactory = "myFactory")
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
+        System.out.println(message);
         xmlToBrokerMessage(message);
         brokerMessageService.writeBrokerMessage(xmlToBrokerMessage(message));
 

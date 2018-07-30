@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Component
@@ -39,7 +40,7 @@ public class StrategyProcessor {
 //        strategyService.writeStrategies(li);
 //        strategyService.getStrategies().parallelStream().forEach(analysisExecutor::execute);
 
-        strategyService.getStrategies().parallelStream().map(analysisExecutor::execute).forEach(orderSender::send);
+        strategyService.getStrategies().parallelStream().map(analysisExecutor::execute).filter(Objects::nonNull).forEach(orderSender::send);
     }
 
 
