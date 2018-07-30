@@ -30,15 +30,11 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
         BollingerBands strategy = (BollingerBands) strat;
         Double movingAvg = marketUpdateService.movingAverage(ticker, strategy.getAvgSeconds());
-        Double standardDeviation =marketUpdateService.movingStandardDeviation(ticker, strategy.getAvgSeconds(), strategy.getStandardDeviation());
+        Double standardDeviation = marketUpdateService.movingStandardDeviation(ticker, strategy.getAvgSeconds(), strategy.getStandardDeviation());
         Double highStandardDeviation = movingAvg + standardDeviation;
         Double lowStandardDeviation = movingAvg - standardDeviation;
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
-        System.out.println("Standard deviation :  " + standardDeviation);
-        System.out.println("Standard deviation high:  " + highStandardDeviation);
-        System.out.println("Standard deviation low:  " + lowStandardDeviation);
-        System.out.println("price:  " + currentPrice);
 
 
         Trend newTrend;

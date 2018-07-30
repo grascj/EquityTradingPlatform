@@ -16,6 +16,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
+
 public class TwoMovingAveragesAnalyzerTest {
 
     @InjectMocks
