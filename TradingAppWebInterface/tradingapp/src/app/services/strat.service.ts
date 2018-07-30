@@ -8,15 +8,14 @@ import { Observable } from 'rxjs/Observable';
 import {TwoMovingAverages} from "../models/twoMovingAverages";
 
 @Injectable()
-export class AddStratService {
+export class StratService {
   private baseUrl = 'http://localhost:8081';
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<any> {
-    return this.http.get(this.baseUrl + '/api/updates');
-      //.map(response => response.json());
-      //.catch(this.handleError);
+  getAll() {
+    return this.http.get(this.baseUrl + '/api/strats');
+
   }
 
   addStrat(strategy: TwoMovingAverages) {
@@ -27,5 +26,13 @@ export class AddStratService {
       }, (err) => {
         console.log(err);
       });
+  }
+
+  deleteStrategy(id: String) {
+    this.http.delete(this.baseUrl + '/api/deleteStrat/'+id) .subscribe(res => {
+      console.log("post executed with response");
+    }, (err) => {
+      console.log(err);
+    });
   }
 }

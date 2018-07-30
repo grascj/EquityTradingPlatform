@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { AddStratComponent } from './add-strat/add-strat.component';
 import {HttpClientModule} from "@angular/common/http";
-import {AddStratService} from "./services/add-strat.service";
+import {StratService} from "./services/strat.service";
 import {FormsModule} from "@angular/forms";
 import { PortfolioComponent } from './portfolio/portfolio.component';
 
@@ -19,9 +19,10 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgbModule.forRoot()
   ],
-  providers: [AddStratService],
+  providers: [StratService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
