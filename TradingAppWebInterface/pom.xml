@@ -12,7 +12,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.conygre.training.MongoJavaConfig</start-class>
+        <start-class>com.citi.com.Application</start-class>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
