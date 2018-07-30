@@ -1,6 +1,7 @@
 package com.citi.training.analysis;
 
 
+import com.citi.training.OrderBroker.OrderSender;
 import com.citi.training.entities.BollingerBands;
 import com.citi.training.entities.Order;
 import com.citi.training.entities.Strategy;
@@ -19,10 +20,11 @@ public class AnalysisExecutor {
     private TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer;
     private Map<Class, Analyzer> analyzerMap;
 
-    public Order execute(Strategy strategy) {
-        analyzerMap.get(strategy.getClass()).analyze(strategy);
+    public void execute(Strategy strategy) {
+        OrderSender os = new OrderSender();
+        Order order = analyzerMap.get(strategy.getClass()).analyze(strategy);
+        os.send(order);
 
-    return null;
     }
 
     @Autowired
