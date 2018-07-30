@@ -39,8 +39,8 @@ public class OrderReceiver {
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
         System.out.println(message);
-        orderCounter++;
-        tradeService.writeTrade(xmlToBrokerMessage(message));
+        xmlToBrokerMessage(message);
+        brokerMessageService.writeBrokerMessage(xmlToBrokerMessage(message));
 
     }
 

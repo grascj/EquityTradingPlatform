@@ -20,11 +20,8 @@ public class AnalysisExecutor {
     private TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer;
     private Map<Class, Analyzer> analyzerMap;
 
-    public void execute(Strategy strategy) {
-        OrderSender os = new OrderSender();
-        Order order = analyzerMap.get(strategy.getClass()).analyze(strategy);
-        os.send(order);
-
+    public Order execute(Strategy strategy) {
+        return analyzerMap.get(strategy.getClass()).analyze(strategy);
     }
 
     @Autowired

@@ -11,7 +11,6 @@ public abstract class Strategy {
 
     @Id
     private ObjectId id;
-
     private String ticker;
 
     private String exitRule;

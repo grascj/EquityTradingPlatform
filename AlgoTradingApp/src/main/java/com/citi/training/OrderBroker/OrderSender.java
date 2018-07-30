@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@ComponentScan
 public class OrderSender {
 
     @Autowired
@@ -37,6 +36,7 @@ public class OrderSender {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 Message msg = session.createTextMessage(brokerMsg.toString());
+                System.out.println(brokerMsg.toString());
                 msg.setJMSCorrelationID(UUID.randomUUID().toString());
                 return msg;
             }
