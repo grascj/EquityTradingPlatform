@@ -1,5 +1,6 @@
 package com.citi.training.analysis;
 
+import com.citi.training.entities.Order;
 import com.citi.training.entities.Strategy;
 import com.citi.training.misc.Action;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class BollingerBandsAnalyzer implements Analyzer {
 
     @Override
-    public Action analyze(Strategy strat) {
+    public Order analyze(Strategy strat) {
         return null;
     }
 }

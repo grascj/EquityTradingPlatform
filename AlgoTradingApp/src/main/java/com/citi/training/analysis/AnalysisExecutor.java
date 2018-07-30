@@ -2,6 +2,7 @@ package com.citi.training.analysis;
 
 
 import com.citi.training.entities.BollingerBands;
+import com.citi.training.entities.Order;
 import com.citi.training.entities.Strategy;
 import com.citi.training.entities.TwoMovingAverages;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ public class AnalysisExecutor {
     private TwoMovingAveragesAnalyzer twoMovingAveragesAnalyzer;
     private Map<Class, Analyzer> analyzerMap;
 
-    public void execute(Strategy strategy) {
+    public Order execute(Strategy strategy) {
         analyzerMap.get(strategy.getClass()).analyze(strategy);
+
+    return null;
     }
 
     @Autowired
