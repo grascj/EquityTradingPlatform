@@ -35,7 +35,6 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         Trend newTrend;
 
         if (shortAvg > longAvg) {
-
             newTrend = Trend.UPWARD;
         } else if (shortAvg < longAvg) {
             newTrend = Trend.DOWNWARD;
@@ -46,7 +45,7 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         if (newTrend != strategy.getCurrentTrend()) {
             ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
             strategyService.writeStrategy(strat);
-            order = new Order(100, ticker);
+            order = new Order(strat.getStockQuantity(), ticker);
 
             MarketUpdate current = marketUpdateService.latestUpdateByTicker(ticker);
             System.out.println(current.getTicker() + " CURRENT PRICE IS: " + current.getPrice());
