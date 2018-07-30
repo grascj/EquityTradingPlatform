@@ -40,7 +40,7 @@ public class OrderReceiver {
         System.out.println("Received transaction");
         System.out.println(message);
         xmlToBrokerMessage(message);
-        brokerMessageService.writeBrokerMessage(xmlToBrokerMessage(message));
+        tradeService.writeTrade(xmlToBrokerMessage(message));
 
     }
 
