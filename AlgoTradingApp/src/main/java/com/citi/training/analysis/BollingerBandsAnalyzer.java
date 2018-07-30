@@ -34,7 +34,10 @@ public class BollingerBandsAnalyzer implements Analyzer {
         Double highStandardDeviation = movingAvg + standardDeviation;
         Double lowStandardDeviation = movingAvg - standardDeviation;
 
-        Double currentPrice = 10.0;
+        Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
+
+
+
         Trend newTrend;
         if(currentPrice > highStandardDeviation){
             order.setPrice(currentPrice);
