@@ -1,4 +1,4 @@
-FROM openjdk:8-Alpine as build
+FROM openjdk:8-alpine as build
 
 WORKDIR /app
 
