@@ -7,12 +7,14 @@ import { AddStratComponent } from './add-strat/add-strat.component';
 import {HttpClientModule} from "@angular/common/http";
 import {AddStratService} from "./services/add-strat.service";
 import {FormsModule} from "@angular/forms";
+import { PortfolioComponent } from './portfolio/portfolio.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddStratComponent
+    AddStratComponent,
+    PortfolioComponent
   ],
   imports: [
     BrowserModule,
