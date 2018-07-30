@@ -1,12 +1,12 @@
 package com.citi.training.entities;
 
 
-import com.citi.training.misc.Action;
 import com.citi.training.misc.Trend;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.io.Serializable;
 
 
-public class TwoMovingAverages extends Strategy {
+public class TwoMovingAverages extends Strategy implements Serializable {
 
 
     private Integer shortAverageSeconds;
