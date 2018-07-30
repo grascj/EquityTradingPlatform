@@ -35,7 +35,7 @@ public class FeedProcessor {
     @Value("${financial.feed.url}")
     String feedURL;
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 250)
     public void pingFeed(){
 
 

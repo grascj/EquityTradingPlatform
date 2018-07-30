@@ -35,6 +35,8 @@ public class MarketUpdateService {
 
 
     public Double movingAverage(String ticker, int timeInSeconds) {
+
+
         AggregationResults<Calculation> res = mongoTemplate.aggregate(
                 newAggregation(
                         match(
@@ -50,13 +52,14 @@ public class MarketUpdateService {
     }
 
     public Double movingStandardDeviation(String ticker, int timeInSeconds, Double standardDeviation) {
+
         AggregationResults<Calculation> res = mongoTemplate.aggregate(
                 newAggregation(
                         match(
                                 Criteria.where("ticker").is(ticker)
                                         .and("timestamp").gte(LocalDateTime.now().minusSeconds(timeInSeconds))
                         ),
-                        group().stdDevSamp("price").as("result")),
+                        group().stdDevPop("price").as("result")),
                 MarketUpdate.class,
                 Calculation.class
         );
@@ -65,7 +68,7 @@ public class MarketUpdateService {
     }
 
 
-    public MarketUpdate latestUpdateByTicker(String ticker){
+    public MarketUpdate latestUpdateByTicker(String ticker) {
         return marketUpdateRepository.findFirstByTickerOrderByTimestampDesc(ticker);
     }
 }
