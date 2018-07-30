@@ -3,11 +3,11 @@ package com.citi.training.analysis;
 import com.citi.training.OrderBroker.OrderReceiver;
 import com.citi.training.OrderBroker.OrderSender;
 import com.citi.training.entities.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class OrderBrokerTest {
+public class OrderBrokerTest {
 
     OrderSender os = new OrderSender();
     OrderReceiver or = new OrderReceiver();

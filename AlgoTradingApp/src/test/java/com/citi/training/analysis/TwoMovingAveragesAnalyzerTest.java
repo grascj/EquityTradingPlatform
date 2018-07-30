@@ -1,10 +1,11 @@
 package com.citi.training.analysis;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-class TwoMovingAveragesAnalyzerTest {
+import org.junit.Test;
 
-    @org.junit.jupiter.api.Test
-    void analyze() {
+public class TwoMovingAveragesAnalyzerTest {
+
+    @Test
+    public void analyze() {
     }
 }
