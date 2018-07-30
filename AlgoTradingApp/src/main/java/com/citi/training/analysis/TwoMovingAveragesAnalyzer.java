@@ -1,5 +1,6 @@
 package com.citi.training.analysis;
 
+import com.citi.training.entities.MarketUpdate;
 import com.citi.training.entities.Order;
 import com.citi.training.entities.Strategy;
 import com.citi.training.entities.TwoMovingAverages;
@@ -23,8 +24,8 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
     @Override
     public Order analyze(Strategy strat) {
 
+        Order order = null;
         String ticker = strat.getTicker();
-        Order order = new Order(100, ticker);
         TwoMovingAverages strategy = (TwoMovingAverages) strat;
 
         Double shortAvg = marketUpdateService.movingAverage(ticker, strategy.getShortAverageSeconds());
@@ -34,10 +35,9 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         Trend newTrend;
 
         if (shortAvg > longAvg) {
-            order.setPrice(longAvg);
+
             newTrend = Trend.UPWARD;
         } else if (shortAvg < longAvg) {
-            order.setPrice(longAvg);
             newTrend = Trend.DOWNWARD;
         } else {
             newTrend = strategy.getCurrentTrend();
@@ -46,19 +46,22 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         if (newTrend != strategy.getCurrentTrend()) {
             ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
             strategyService.writeStrategy(strat);
+            order = new Order(100, ticker);
+
+            MarketUpdate current = marketUpdateService.latestUpdateByTicker(ticker);
+            System.out.println(current.getTicker() + " CURRENT PRICE IS: " + current.getPrice());
+            order.setPrice(current.getPrice());
 
             if (newTrend == newTrend.DOWNWARD) { //SHORT CROSSED BELOW
                 order.setBuy(false);
                 System.out.println("SELL");
-                return order;
             } else if (newTrend == Trend.UPWARD) { //SHORT CROSSED ABOVE
                 order.setBuy(true);
                 System.out.println("BUY");
-                return order;
             }
+
         }
+        return order;
 
-
-        return null;
     }
 }
