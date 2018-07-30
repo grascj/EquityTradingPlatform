@@ -15,10 +15,10 @@
       <input type="text" class="form-control" id="ticker" required [(ngModel)]="strategy.ticker" name="ticker">
     </div>
 
-<!--    <div class="form-group">
-      <label for="numStocks">Quantity</label>
-      <input type="text" class="form-control" id="numStocks" required [(ngModel)]="strategy.numStocks" name="numStocks">
-    </div>-->
+    <div class="form-group">
+      <label for="stockQuantity">Quantity</label>
+      <input type="text" class="form-control" id="stockQuantity" required [(ngModel)]="strategy.stockQuantity" name="numStocks">
+    </div>
 
     <div class="form-group">
       <label for="longVal">Long Duration</label>
@@ -33,7 +33,7 @@
    <!-- <div class="form-group">
       <label for="percentDeviation">Percent Deviation</label>
       <input type="text" class="form-control" id="percentDeviation" required [(ngModel)]="strategy.percentDeviation" name="percentDeviation">
-    </div>
+    </div> -->
 
     <div class="form-group">
       <label for="exitRule">Exit Rule</label>
@@ -44,7 +44,7 @@
       <label for="exitPercentage">Exit Rule Percentage</label>
       <input type="text" class="form-control" id="exitPercentage" required [(ngModel)]="strategy.exitPercentage" name="exitPercentage">
     </div>
--->
+
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
