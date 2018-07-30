@@ -1,11 +1,12 @@
 package com.citi.training.entities;
 
-
-import com.citi.training.misc.Action;
+import com.citi.training.deserializers.StrategyDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@JsonDeserialize(using = StrategyDeserializer.class)
 @Document(collection="strategies")
 public abstract class Strategy {
 
@@ -55,4 +56,5 @@ public abstract class Strategy {
     public Integer getStockQuantity() { return stockQuantity;   }
 
     public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+
 }
