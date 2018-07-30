@@ -2,7 +2,7 @@ package com.citi.training.services;
 
 
 import com.citi.training.entities.*;
-import com.citi.training.repositories.BrokerMessageRepository;
+import com.citi.training.repositories.TradeRepository;
 
 import com.citi.training.repositories.StrategyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
