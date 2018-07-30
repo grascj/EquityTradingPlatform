@@ -26,10 +26,41 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
         String ticker = strat.getTicker();
         Order order = new Order(100, ticker);
+
+
         BollingerBands strategy = (BollingerBands) strat;
-
         Double movingAvg = marketUpdateService.movingAverage(ticker, strategy.getAvgSeconds());
+        Double standardDeviation = movingAvg + marketUpdateService.movingStandardDeviation(ticker, strategy.getAvgSeconds(), strategy.getStandardDeviation());
+        Double highStandardDeviation = movingAvg + standardDeviation;
+        Double lowStandardDeviation = movingAvg - standardDeviation;
 
+        Double currentPrice = 10.0;
+        Trend newTrend;
+        if(currentPrice > highStandardDeviation){
+            order.setPrice(currentPrice);
+            newTrend = Trend.DOWNWARD;
+        }else if(currentPrice < lowStandardDeviation){
+            order.setPrice(currentPrice);
+            newTrend = Trend.UPWARD;
+            order.setPrice(currentPrice);
+        }else{
+            newTrend = strategy.getCurrentTrend();
+        }
+
+        if (newTrend != strategy.getCurrentTrend()) {
+            ((BollingerBands) strat).setCurrentTrend(newTrend);
+            strategyService.writeStrategy(strat);
+
+            if (newTrend == newTrend.DOWNWARD) { //current price went above high SD
+                order.setBuy(false);
+                System.out.println("SELL");
+                return order;
+            } else if (newTrend == Trend.UPWARD) { //current price went below low SD
+                order.setBuy(true);
+                System.out.println("BUY");
+                return order;
+            }
+        }
 
         return null;
     }

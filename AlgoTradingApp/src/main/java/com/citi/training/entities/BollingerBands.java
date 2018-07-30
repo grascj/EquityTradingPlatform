@@ -8,13 +8,14 @@ public class BollingerBands extends Strategy {
 
 
     private Integer avgSeconds;
-    private Integer standardDeviation;
+    private Double standardDeviation;
+    private Trend currentTrend;
 
-
-    public BollingerBands(String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer avgSeconds, Integer stanardDeviation) {
-        super(ticker, stockQuanity, exitRule, exitPercentage);
+    public BollingerBands(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Integer avgSeconds, Double standardDeviation) {
+        super(ticker, stockQuantity, exitRule, exitPercentage);
         this.avgSeconds = avgSeconds;
-        this.standardDeviation = stanardDeviation;
+        this.standardDeviation = standardDeviation;
+        this.currentTrend = currentTrend.FLAT;
 
     }
 
@@ -22,7 +23,23 @@ public class BollingerBands extends Strategy {
         this.avgSeconds = avgSeconds;
     }
 
-    public void setStandardDeviation(Integer standardDeviation) {
+    public void setStandardDeviation(Double standardDeviation) {
         this.standardDeviation = standardDeviation;
+    }
+
+    public Integer getAvgSeconds() {
+        return avgSeconds;
+    }
+
+    public Double getStandardDeviation() {
+        return standardDeviation;
+    }
+
+    public Trend getCurrentTrend() {
+        return currentTrend;
+    }
+
+    public void setCurrentTrend(Trend currentTrend) {
+        this.currentTrend = currentTrend;
     }
 }

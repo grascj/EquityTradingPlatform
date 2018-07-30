@@ -34,14 +34,14 @@ public class MarketUpdateService {
     }
 
 
-    public Double movingAverage(String ticker, int timeInSeconds){
+    public Double movingAverage(String ticker, int timeInSeconds) {
         AggregationResults<Calculation> res = mongoTemplate.aggregate(
                 newAggregation(
                         match(
                                 Criteria.where("ticker").is(ticker)
-                                .and("timestamp").gte(LocalDateTime.now().minusSeconds(timeInSeconds))
+                                        .and("timestamp").gte(LocalDateTime.now().minusSeconds(timeInSeconds))
                         ),
-                group().avg("price").as("result")),
+                        group().avg("price").as("result")),
                 MarketUpdate.class,
                 Calculation.class
         );
@@ -49,7 +49,7 @@ public class MarketUpdateService {
         return res.getUniqueMappedResult().getResult();
     }
 
-    public Double movingStandardDeviation(String ticker, int timeInSeconds){
+    public Double movingStandardDeviation(String ticker, int timeInSeconds, Double standardDeviation) {
         AggregationResults<Calculation> res = mongoTemplate.aggregate(
                 newAggregation(
                         match(
@@ -61,7 +61,7 @@ public class MarketUpdateService {
                 Calculation.class
         );
 
-        return res.getUniqueMappedResult().getResult();
+        return res.getUniqueMappedResult().getResult() * standardDeviation;
     }
 
 }
