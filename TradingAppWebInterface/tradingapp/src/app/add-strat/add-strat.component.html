@@ -5,32 +5,32 @@
 <h3>Add Strategy</h3>
 <div style="width: 300px;">
   <form (ngSubmit)="addStrategy()">
-    <div class="form-group">
+<!--    <div class="form-group">
       <label for="strategy">Strategy Type</label>
       <input type="text" class="form-control" id="strategy" required [(ngModel)]="strategy.strategy" name="strategy">
-    </div>
+    </div>-->
 
     <div class="form-group">
       <label for="ticker">Stock Ticker</label>
       <input type="text" class="form-control" id="ticker" required [(ngModel)]="strategy.ticker" name="ticker">
     </div>
 
-    <div class="form-group">
+<!--    <div class="form-group">
       <label for="numStocks">Quantity</label>
       <input type="text" class="form-control" id="numStocks" required [(ngModel)]="strategy.numStocks" name="numStocks">
-    </div>
+    </div>-->
 
     <div class="form-group">
       <label for="longVal">Long Duration</label>
-      <input type="text" class="form-control" id="longVal" required [(ngModel)]="strategy.longVal" name="longVal">
+      <input type="text" class="form-control" id="longVal" required [(ngModel)]="strategy.longAverageSeconds" name="longVal">
     </div>
 
     <div class="form-group">
       <label for="shortVal">Short Duration</label>
-      <input type="text" class="form-control" id="shortVal" required [(ngModel)]="strategy.shortVal" name="shortVal">
+      <input type="text" class="form-control" id="shortVal" required [(ngModel)]="strategy.shortAverageSeconds" name="shortVal">
     </div>
 
-    <div class="form-group">
+   <!-- <div class="form-group">
       <label for="percentDeviation">Percent Deviation</label>
       <input type="text" class="form-control" id="percentDeviation" required [(ngModel)]="strategy.percentDeviation" name="percentDeviation">
     </div>
@@ -44,7 +44,7 @@
       <label for="exitPercentage">Exit Rule Percentage</label>
       <input type="text" class="form-control" id="exitPercentage" required [(ngModel)]="strategy.exitPercentage" name="exitPercentage">
     </div>
-
+-->
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>

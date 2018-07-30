@@ -5,6 +5,7 @@ import {MarketUpdate} from '../models/marketUpdate'
 import 'rxjs/add/operator/toPromise';
 
 import { Observable } from 'rxjs/Observable';
+import {TwoMovingAverages} from "../models/twoMovingAverages";
 
 @Injectable()
 export class AddStratService {
@@ -18,8 +19,13 @@ export class AddStratService {
       //.catch(this.handleError);
   }
 
-  addStrat(strategy: Object): Observable<any> {
-    console.log("in servicew for add");
-    return this.http.post(this.baseUrl + '/api/addStrat', strategy);
+  addStrat(strategy: TwoMovingAverages) {
+    console.log("in servicew for add: " + strategy.ticker + " " + strategy.longAverageSeconds + " " + strategy.shortAverageSeconds);
+    return this.http.post(this.baseUrl + '/api/addStrat', strategy)
+      .subscribe(res => {
+        console.log("post executed with response");
+      }, (err) => {
+        console.log(err);
+      });
   }
 }
