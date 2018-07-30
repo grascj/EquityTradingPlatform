@@ -64,4 +64,8 @@ public class MarketUpdateService {
         return res.getUniqueMappedResult().getResult() * standardDeviation;
     }
 
+
+    public MarketUpdate latestUpdateByTicker(String ticker){
+        return marketUpdateRepository.findFirstByTickerOrderByTimestampDesc(ticker);
+    }
 }
