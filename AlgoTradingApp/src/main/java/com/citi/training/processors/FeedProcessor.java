@@ -38,22 +38,8 @@ public class FeedProcessor {
     @Value("${financial.feed.url}")
     String feedURL;
 
-    @Scheduled(fixedRate =250)
-    public void pingFeed() {
-
-
-        //build out API call
-
-
-        //stream on a list is ordered
-        String target = feedURL + "?s=" + marketInformation.getTickers().stream().reduce((a, b) -> a + "," + b).get();
-
-        // p0 is just the prices ordered the same as the request
-        target += "&f=p0";
-
-        //exec API call
-
-
+    @Scheduled(fixedRate = 250)
+    public void pingFeed(){
         try {
 
             String response = sendRequest();
@@ -76,11 +62,30 @@ public class FeedProcessor {
         con.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-    public List<MarketUpdate> parseFeedResponse(String resp) {
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine + " ");
+        }
+        in.close();
+        con.disconnect();
+        return content.toString();
+    }
+
+    public String formURL(){
+        //stream on a list is ordered
+        String target = feedURL + "?s=" + marketInformation.getTickers().stream().reduce( (a, b) -> a + "," + b).get();
+        // p0 is just the prices ordered the same as the request
+        target += "&f=p0";
+        return target;
+    }
+
+    public List<MarketUpdate> parseFeedResponse(String resp){
         Scanner respScanner = new Scanner(resp);
         LocalDateTime timestamp = LocalDateTime.now();
         return marketInformation.getTickers().stream().map(x -> new MarketUpdate(timestamp, x, respScanner.nextDouble())).collect(Collectors.toList());
     }
+
 
 
 }
