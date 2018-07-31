@@ -31,25 +31,15 @@ export class AddStratComponent implements OnInit {
   }
 
   addStrategy() {
-    //check is form is valid
-    if(this.strategy.ticker != null && this.strategy.stockQuantity != null && this.strategy.exitRule != null && this.strategy.exitPercentage != null) {
-      if(this.isTwoMovingAverages && (TwoMovingAverages) this.strategy.longAverageSeconds != null && (TwoMovingAverages) this.strategy.shortAverageSeconds) {
-        this.isFormValid = true;
-        console.log("true");
-      }
-      if(this.isBollingerBand && (BollingerBands) this.strategy.standardDeviation != null && (BollingerBands) this.strategy.avgsSeconds != null) {
-        this.isFormValid = true;
-        console.log("true");
-      }
-    }
+    console.log("Form submitted");
+    this.addService.addStrat(this.strategy);
+    //reset
+    this.stratSelected = false;
+    this.exitRuleDropdownText = "Exit Rule";
+    this.isFormValid = false;
 
     if(this.isFormValid) {
-      console.log("Form submitted");
-      this.addService.addStrat(this.strategy);
-      //reset
-      this.stratSelected = false;
-      this.exitRuleDropdownText = "Exit Rule";
-      this.isFormValid = false;
+
     }
 
 

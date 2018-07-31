@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {StratService} from "../services/strat.service";
-import {MongoId} from "../models/mongoId";
+import {TradeService} from "../services/trade.service";
 import {Strategy} from "../models/strategy";
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-portfolio',
@@ -11,8 +12,11 @@ import {Strategy} from "../models/strategy";
 export class PortfolioComponent implements OnInit {
   strategies: any;
   stratObjs: Strategy[] = [];
+  trades: any;
 
-  constructor(private stratService: StratService) { }
+  chart = []
+
+  constructor(private stratService: StratService, private tradeService: TradeService) { }
 
   ngOnInit() {
     this.stratService.getAll().subscribe( data => {
@@ -28,25 +32,66 @@ export class PortfolioComponent implements OnInit {
   }
 
   updatePortfolio(id) {
+    let stratObjHolder = [];
     for(let s of this.stratObjs) {
-      console.log(s.id + " and id " + id + " match?? ");
-      console.log(s.id != id);
+      if(s.id != id) {
+        stratObjHolder.push(s);
+      }
     }
+    console.log(this.stratObjs.length);
     console.log("Updating...");
-      this.stratObjs.filter((elem) => {
-        return elem.id != id;
-      });
+
+     this.stratObjs =  stratObjHolder;
+    console.log(this.stratObjs.length);
   }
 
   deleteStrat(id: String) {
     this.stratService.deleteStrategy(id);
     setTimeout(() => {
       this.updatePortfolio(id);
-    }, 1000);
+    }, 500);
 
   }
 
   expandStrat(id: String) {
-  //TODO
+    let prices =  [];
+    this.tradeService.getAll().subscribe( data => {
+      this.trades = data;
+        for(let t of this.trades) {
+          prices.push(t.order.price)
+        }
+
+      this.chart = new Chart('canvas', {
+        type: 'line',
+        data: {
+          labels: [1, 2, 3, 4, 5, 6, 7, 8],
+          datasets: [
+            {
+              data: prices,
+              borderColor: "#3cba9f",
+              fill: false
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true
+            }],
+            yAxes: [{
+              display: true
+            }],
+          },
+          maintainAspectRatio: false
+        }
+      });
+      }
+    );
+
+
+
   }
 }

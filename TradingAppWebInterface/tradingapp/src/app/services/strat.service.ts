@@ -10,7 +10,7 @@ import {Strategy} from "../models/strategy";
 
 @Injectable()
 export class StratService {
-  private baseUrl = 'http://localhost:8081';
+  private baseUrl = 'http://localhost:8082';
 
   constructor(private http: HttpClient) { }
 

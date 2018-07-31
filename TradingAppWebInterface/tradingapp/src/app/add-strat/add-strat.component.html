@@ -15,7 +15,7 @@
 
 
   <div class="container" *ngIf="stratSelected">
-    <form class="form-inline" (ngSubmit)="addStrategy()">
+    <form class="form-inline" (ngSubmit)="stratForm.form.valid && addStrategy()" #stratForm="ngForm">
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
         <label class="mr-sm-2" for="ticker">Stock Ticker</label>
@@ -56,9 +56,7 @@
 
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-        <!--<label class="mr-sm-2" for="exitRule">Exit Rule</label>
-        <input type="text" class="form-control" id="exitRule" required [(ngModel)]="strategy.exitRule" name="exitRule">-->
-        <div ngbDropdown class="d-inline-block">
+        <div  class="d-inline-block">
           <a class="btn btn-outline-primary"  id="exitRuleDropdown" ngbDropdownToggle> {{ exitRuleDropdownText }}</a>
           <div ngbDropdownMenu aria-labelledby="exitRuleDropdown">
             <a class="dropdown-item" (click)="setExitRule('profit')">Profit</a>
@@ -74,7 +72,7 @@
 
       <!--ticker.valid && numStocks.valid && exitPercentage.valid && ((longVal.valid && shortVal.valid) || (avgSeconds.valid && std.valid)) -->
 <!--      <div *ngIf="ticker.valid && numStocks.valid && ((longVal.valid && shortVal.valid) || (avgSeconds.valid && std.valid))">-->
-       <button type="submit" class="btn btn-success" *ngIf="!isFormValid">Submit</button>
+       <button type="submit" class="btn btn-success">Submit</button>
       <!--       </div>-->
 
     </form>
