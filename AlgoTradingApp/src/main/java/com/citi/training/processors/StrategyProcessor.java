@@ -1,5 +1,6 @@
 package com.citi.training.processors;
 
+import com.citi.training.OrderBroker.OrderSender;
 import com.citi.training.analysis.AnalysisExecutor;
 import com.citi.training.entities.BollingerBands;
 import com.citi.training.entities.Strategy;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Component
@@ -23,10 +25,10 @@ public class StrategyProcessor {
     AnalysisExecutor analysisExecutor;
 
     @Autowired
-    MarketInformation marketInformation;
+    StrategyService strategyService;
 
     @Autowired
-    StrategyService strategyService;
+    OrderSender orderSender;
 
 
     @Scheduled(fixedDelay = 5000)
@@ -36,7 +38,9 @@ public class StrategyProcessor {
 //        li.add(new BollingerBands("goog", 1.1));
 //        li.add(new TwoMovingAverages("aapl", 10, 30));
 //        strategyService.writeStrategies(li);
-        strategyService.getStrategies().stream().forEach(analysisExecutor::execute);
+//        strategyService.getStrategies().parallelStream().forEach(analysisExecutor::execute);
+
+        strategyService.getStrategies().parallelStream().map(analysisExecutor::execute).filter(Objects::nonNull).forEach(orderSender::send);
     }
 
 

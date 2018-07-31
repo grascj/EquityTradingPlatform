@@ -2,7 +2,7 @@ package com.citi.training.entities;
 
 
 import com.citi.training.OrderBroker.OrderSender;
-import org.springframework.core.annotation.Order;
+
 import org.xml.sax.InputSource;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.xml.sax.SAXException;
@@ -16,17 +16,23 @@ import java.io.IOException;
 import java.io.StringReader;
 
 @Document
-public class BrokerMessage {
+public class Order {
     private boolean buy;
     private double price;
     private int size;
     private String stock;
 
-    public BrokerMessage() {
+    public Order() {
 
     }
 
-    public BrokerMessage(boolean buy, double price, int size, String stock) {
+
+    public Order(int size, String stock) {
+        this.size = size;
+        this.stock = stock;
+    }
+
+    public Order(boolean buy, double price, int size, String stock) {
         this.buy = buy;
         this.price = price;
         this.size = size;
@@ -35,7 +41,7 @@ public class BrokerMessage {
     }
 
 
-    public BrokerMessage(String buy, String price, String size, String stock) {
+    public Order(String buy, String price, String size, String stock) {
         this.buy = Boolean.parseBoolean(buy);
         this.price = Double.parseDouble(price);
         this.size = Integer.parseInt(size);
@@ -55,7 +61,7 @@ public class BrokerMessage {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

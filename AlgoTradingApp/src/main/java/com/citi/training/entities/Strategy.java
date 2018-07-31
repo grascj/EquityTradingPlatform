@@ -6,12 +6,11 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="strategies")
+@Document(collection = "strategies")
 public abstract class Strategy {
 
     @Id
     private ObjectId id;
-
     private String ticker;
 
     private String exitRule;
@@ -26,6 +25,9 @@ public abstract class Strategy {
         this.exitRule = exitRule;
         this.exitPercentage = exitPercentage;
         this.stockQuantity = stockQuantity;
+    }
+
+    public Strategy() {
     }
 
     public ObjectId getId() {
@@ -44,15 +46,27 @@ public abstract class Strategy {
         this.ticker = ticker;
     }
 
-    public String getExitRule() {  return exitRule;     }
+    public String getExitRule() {
+        return exitRule;
+    }
 
-    public void setExitRule(String exitRule) { this.exitRule = exitRule;   }
+    public void setExitRule(String exitRule) {
+        this.exitRule = exitRule;
+    }
 
-    public Double getExitPercentage() { return exitPercentage;  }
+    public Double getExitPercentage() {
+        return exitPercentage;
+    }
 
-    public void setExitPercentage(double exitPercentage) {  this.exitPercentage = exitPercentage;  }
+    public void setExitPercentage(double exitPercentage) {
+        this.exitPercentage = exitPercentage;
+    }
 
-    public Integer getStockQuantity() { return stockQuantity;   }
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
 
-    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
 }
