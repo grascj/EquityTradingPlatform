@@ -1,5 +1,6 @@
 package com.citi.training.deserializers;
 
+import com.citi.training.entities.BollingerBands;
 import com.citi.training.entities.Strategy;
 import com.citi.training.entities.TwoMovingAverages;
 import com.fasterxml.jackson.core.JsonParser;
@@ -33,11 +34,11 @@ public class StrategyDeserializer  extends StdDeserializer<Strategy> {
             return new TwoMovingAverages(ticker, numStocks, exitRule, exitPercentage, shortVal, longVal);
         }
         else {
-            //NEED TO UPDATE FOR BOLLINGER
-            int shortVal = Integer.parseInt(node.get("shortAverageSeconds").asText());
-            int longVal = Integer.parseInt(node.get("longAverageSeconds").asText());
+            //must be bollinger
+            int avgSec = Integer.parseInt(node.get("avgSeconds").asText());
+            double std = Double.parseDouble(node.get("standardDeviation").asText());
 
-            return new TwoMovingAverages(ticker, numStocks, exitRule, exitPercentage,  shortVal, longVal);
+            return new BollingerBands(ticker, numStocks, exitRule, exitPercentage,  avgSec, std);
         }
 
 
