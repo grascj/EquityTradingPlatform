@@ -64,6 +64,7 @@ public class OrderReceiver {
         String size = doc.getElementsByTagName("size").item(0).getFirstChild().getTextContent();
         String buy = doc.getElementsByTagName("buy").item(0).getFirstChild().getTextContent();
         String id = doc.getElementsByTagName("id").item(0).getFirstChild().getTextContent();
+        System.out.println(id);
         String result = doc.getElementsByTagName("result").item(0).getFirstChild().getTextContent();
 
         Order bm = new Order(buy, price, size, stock, id);

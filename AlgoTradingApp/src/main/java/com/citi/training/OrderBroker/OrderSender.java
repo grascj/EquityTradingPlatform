@@ -16,13 +16,8 @@ public class OrderSender {
 
     @Autowired
     private JmsTemplate jmsTemplate;
-<<<<<<< Updated upstream
-
-    private Order bm = new Order(true, 10, 10, "GOOG");
 
 
-=======
->>>>>>> Stashed changes
 
     /**
      * Test method to see if the broker message receives messages.
