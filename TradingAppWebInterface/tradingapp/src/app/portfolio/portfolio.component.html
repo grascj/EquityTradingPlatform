@@ -1,7 +1,7 @@
 <div class="container">
   <h3>Your Portfolio</h3>
 
-  <div class="" *ngIf="chart" style="margin: 0.1em;" width="100%">
+  <div *ngIf="chart && !chartIsLoading" style="margin: 0.1em;" width="100%">
     <h5>Strategy P&amp;L</h5>
     <canvas id="canvas" >{{ chart }}</canvas>
   </div>
@@ -9,17 +9,17 @@
   <table class="table">
     <thead>
     <tr>
-      <th>Strategy Type</th>
-      <th>Ticker</th>
-      <th>Quantity</th>
-      <th>Exit Rule</th>
-      <th>Percentage</th>
-      <th></th>
-      <th></th>
+      <th scope="col">Strategy Type</th>
+      <th scope="col">Ticker</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Exit Rule</th>
+      <th scope="col">Percentage</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let strat of stratObjs">
+    <tr *ngFor="let strat of stratObjs" scope="row">
       <td *ngIf="strat.standardDeviation">Bollinger Bands</td> <td *ngIf="strat.longAverageSeconds">Two Moving Avgs</td>
       <td>{{ strat.ticker }}</td>
       <td>{{ strat.stockQuantity }}</td>

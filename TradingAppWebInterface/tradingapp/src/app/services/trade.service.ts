@@ -13,7 +13,10 @@ export class TradeService {
   }
 
   getForStrat(id: String) {
-    return this.http.get(this.baseUrl + '/performance/trades/' + id);
+    return this.http.get(this.baseUrl + '/performance/recentTrades/' + id);
   }
 
+  getAllForStrat(id: String) {
+    return this.http.get(this.baseUrl + '/performance/trades/' + id);
+  }
 }

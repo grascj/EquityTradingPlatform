@@ -13,7 +13,7 @@ export class PortfolioComponent implements OnInit {
   strategies: any;
   stratObjs: Strategy[] = [];
   trades: any;
-
+  chartIsLoading: boolean = true;
   chart = []
 
   constructor(private stratService: StratService, private tradeService: TradeService) { }
@@ -54,20 +54,23 @@ export class PortfolioComponent implements OnInit {
   }
 
   expandStrat(id: String) {
-    let prices =  [];
+    this.chartIsLoading = true;
+    let pAndL =  [];
+    let times = [];
     this.tradeService.getForStrat(id).subscribe( data => {
       this.trades = data;
         for(let t of this.trades) {
-          prices.push(t.profitAndLoss)
+          pAndL.push(t.profitAndLoss)
+          times.push(t.timeStamp.hour + ":" + t.timeStamp.minute);
         }
 
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: [1, 2, 3, 4, 5, 6, 7, 8],
+          labels: times,
           datasets: [
             {
-              data: prices,
+              data: pAndL,
               borderColor: "#3cba9f",
               fill: false
             }
@@ -85,12 +88,14 @@ export class PortfolioComponent implements OnInit {
               display: true
             }],
           },
-          maintainAspectRatio: false
+          responsive: true,
+          maintainAspectRatio: true
         }
       });
+
       }
     );
-
+    this.chartIsLoading = false;
 
 
   }
