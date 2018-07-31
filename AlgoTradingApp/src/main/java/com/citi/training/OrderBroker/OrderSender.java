@@ -21,6 +21,7 @@ public class OrderSender {
 
     @Autowired
     private JmsTemplate jmsTemplate;
+
     private Order bm = new Order(true, 10, 10, "GOOG");
 
 

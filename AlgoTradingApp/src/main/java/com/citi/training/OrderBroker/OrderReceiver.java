@@ -4,7 +4,6 @@ import com.citi.training.entities.Order;
 import com.citi.training.entities.Trade;
 import com.citi.training.services.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
@@ -27,15 +26,13 @@ public class OrderReceiver {
      * Get a copy of the application context
      */
     @Autowired
-    ConfigurableApplicationContext context;
-    @Autowired
     TradeService tradeService;
 
     /**
      * When you receive a message, print it out, then shut down the application.
      * Finally, clean up any ActiveMQ server stuff.
      */
-    @JmsListener(destination = "OrderBroker_Reply", containerFactory = "myFactory")
+    @JmsListener(destination = "OrderBroker_Reply")
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
         System.out.println(message);
