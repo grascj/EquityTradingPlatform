@@ -40,7 +40,8 @@ public class TradeController {
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime anHrAgo = currentTime.minusHours(1);
         //System.out.println(currentTime.toString() + " and an hour ago: " + anHrAgo.toString());
-        repository.findByIdAndResultAndTimeStampBetween(id, "Filled", currentTime, anHrAgo).forEach(allTrades::add);
+        repository.findByIdAndResultAndTimeStampBetween(id, "Filled", currentTime.toString(), anHrAgo.toString()).forEach(allTrades::add);
+        System.out.println("SIZE " + allTrades.size());
         return allTrades;
     }
 }

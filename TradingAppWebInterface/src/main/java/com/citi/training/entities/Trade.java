@@ -57,7 +57,7 @@ public class Trade {
         this.profitAndLoss = profitAndLoss;
     }
 
-    public LocalDateTime getTimeStamp() { return timeStamp;   }
+    public String getTimeStamp() { return timeStamp.toString();   }
 
     public void setTimeStamp(LocalDateTime timeStamp) { this.timeStamp = timeStamp; }
 
