@@ -32,51 +32,32 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         Double longAvg = marketUpdateService.movingAverage(ticker, strategy.getLongAverageSeconds());
         System.out.println("shortAvg: " + shortAvg + " longAvg:" + longAvg);
 
-        Trend newTrend;
+        Trend newTrend = strategy.getCurrentTrend();
 
         if (shortAvg > longAvg) {
             newTrend = Trend.UPWARD;
         } else if (shortAvg < longAvg) {
             newTrend = Trend.DOWNWARD;
-        } else {
-            newTrend = strategy.getCurrentTrend();
         }
 
         if (newTrend != strategy.getCurrentTrend()) {
             MarketUpdate current = marketUpdateService.latestUpdateByTicker(ticker);
-            ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
+            strategy.setCurrentTrend(newTrend);
 
+            order = new Order(strategy.getStockQuantity(), ticker, current.getPrice());
 
-            order = new Order(strat.getStockQuantity(), ticker, current.getPrice());
-
-
-            if (newTrend == newTrend.DOWNWARD) { //SHORT CROSSED BELOW
-                if (!strategy.getLookingToBuy()) {
-                    order.setBuy(false);
-
-                    strategy.setLookingToBuy(true);
-                    strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
-
-
-                    System.out.println("SELfdaL");
-
-                }
-
-            } else if (newTrend == Trend.UPWARD) { //SHORT CROSSED ABOVE
-                if (strategy.getLookingToBuy()) {
-                    order.setBuy(true);
-
-                    strategy.setLookingToBuy(false);
-
-                    strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
-
-                    System.out.println("BfdaUY");
-
-                }
+            if (newTrend == newTrend.DOWNWARD && !strategy.getLookingToBuy()) { //SHORT CROSSED BELOW
+                order.setBuy(false);
+                strategy.setLookingToBuy(true);
+                strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
+            } else if (newTrend == Trend.UPWARD && strategy.getLookingToBuy()) { //SHORT CROSSED ABOVE
+                order.setBuy(true);
+                strategy.setLookingToBuy(false);
+                strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
             }
             strategyService.writeStrategy(strat);
         }
-        if(order !=null) {
+        if (order != null) {
             tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
         }
         return order;
