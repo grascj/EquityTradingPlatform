@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.mockito.Mockito.*;
 
 
-public class BollingerBandTest {
+public class BollingerBandAnalyzerTest {
 
     @InjectMocks
     private BollingerBandsAnalyzer bollingerBandAnalyzer;

@@ -31,7 +31,7 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         Double shortAvg = marketUpdateService.movingAverage(ticker, strategy.getShortAverageSeconds());
         Double longAvg = marketUpdateService.movingAverage(ticker, strategy.getLongAverageSeconds());
         System.out.println("shortAvg: " + shortAvg + " longAvg:" + longAvg);
-
+        System.out.println(strategy.getId());
         Trend newTrend;
 
         if (shortAvg > longAvg) {
@@ -43,24 +43,37 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         }
 
         if (newTrend != strategy.getCurrentTrend()) {
-            ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
-            strategyService.writeStrategy(strat);
-            order = new Order(strat.getStockQuantity(), ticker);
-
             MarketUpdate current = marketUpdateService.latestUpdateByTicker(ticker);
+            ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
+
+
+            order = new Order(strat.getStockQuantity(), ticker, current.getPrice());
             System.out.println(current.getTicker() + " CURRENT PRICE IS: " + current.getPrice());
-            order.setPrice(current.getPrice());
 
             if (newTrend == newTrend.DOWNWARD) { //SHORT CROSSED BELOW
-                order.setBuy(false);
-                System.out.println("SELL");
+                if (!strategy.getLookingToBuy()) {
+                    order.setBuy(false);
+                    order.setId(strategy.getId());
+                    strategy.setLookingToBuy(true);
+                    strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
+                    System.out.println("SELL");
+                }
+
             } else if (newTrend == Trend.UPWARD) { //SHORT CROSSED ABOVE
-                order.setBuy(true);
-                System.out.println("BUY");
+                if (strategy.getLookingToBuy()) {
+                    order.setBuy(true);
+                    order.setId(strategy.getId());
+                    strategy.setLookingToBuy(false);
+                    strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+                    System.out.println("BUY");
+                }
             }
 
         }
+        strategyService.writeStrategy(strat);
         return order;
 
     }
+
+
 }

@@ -1,19 +1,9 @@
 package com.citi.training.entities;
 
 
-import com.citi.training.OrderBroker.OrderSender;
-
-import org.xml.sax.InputSource;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.xml.sax.SAXException;
 
-import org.w3c.dom.*;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
 
 @Document
 public class Order {
@@ -21,14 +11,16 @@ public class Order {
     private double price;
     private int size;
     private String stock;
+    private ObjectId id;
 
     public Order() {
 
     }
 
 
-    public Order(int size, String stock) {
+    public Order(int size, String stock, double price) {
         this.size = size;
+        this.price = price;
         this.stock = stock;
     }
 
@@ -41,11 +33,12 @@ public class Order {
     }
 
 
-    public Order(String buy, String price, String size, String stock) {
+    public Order(String buy, String price, String size, String stock, String id) {
         this.buy = Boolean.parseBoolean(buy);
         this.price = Double.parseDouble(price);
         this.size = Integer.parseInt(size);
         this.stock = stock;
+        this.id = new ObjectId(id);
 
     }
 
@@ -82,16 +75,24 @@ public class Order {
     }
 
 
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
 
 
         return "<trade>\n" +
-                "<buy>"+buy+"</buy>\n" +
-                "<id>0</id>\n" +
-                "<price>"+price+"</price>\n" +
-                "<size>"+size+"</size>\n" +
-                "<stock>"+stock+"</stock>\n" +
+                "<buy>" + buy + "</buy>\n" +
+                "<id>" + id + "</id>\n" +
+                "<price>" + price + "</price>\n" +
+                "<size>" + size + "</size>\n" +
+                "<stock>" + stock + "</stock>\n" +
                 "<whenAsDate>2014-07-31T22:33:22.801-04:00</whenAsDate>\n" +
                 "</trade>";
     }

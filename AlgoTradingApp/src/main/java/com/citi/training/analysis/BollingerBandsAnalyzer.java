@@ -20,15 +20,32 @@ public class BollingerBandsAnalyzer implements Analyzer {
     @Autowired
     private StrategyService strategyService;
 
-
+    /**
+     * Utilized the data points given by the bollinger bands strategy to determine if a stock is currently undervalued or overvalued.
+     * It then uses that information to either buy sell or hold that stock.
+     * <p>
+     * Data Points from the strategy:
+     * 1. AvgSeconds: determines how far of an average that the analyzer should use.
+     * 2. Standard Deviation: measures how many s'ds away from the mean the analyzer should look for
+     * 3. movingAvg : the moving average based on the avgSeconds that the user inputs
+     * <p>
+     * If the moving average is higher or lower than  the number of standard deviations from the mean the analyzer can determine if the stock is overvalue dor undervalued;
+     * if higher than the sd's
+     * than the stock is  overvalued, so sell
+     * if lower than the sd's
+     * then the stock is undervalued , so buy
+     *
+     * @param strat the strategy that the analyzer will use to gather information and execute a trade
+     * @return
+     */
     @Override
     public Order analyze(Strategy strat) {
 
         String ticker = strat.getTicker();
-        Order order = new Order(100, ticker);
-
+        Order order = new Order(100, ticker, 100.0);
 
         BollingerBands strategy = (BollingerBands) strat;
+
         Double movingAvg = marketUpdateService.movingAverage(ticker, strategy.getAvgSeconds());
         Double standardDeviation = marketUpdateService.movingStandardDeviation(ticker, strategy.getAvgSeconds(), strategy.getStandardDeviation());
         Double highStandardDeviation = movingAvg + standardDeviation;
@@ -51,19 +68,29 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
         if (newTrend != strategy.getCurrentTrend()) {
             ((BollingerBands) strat).setCurrentTrend(newTrend);
-            strategyService.writeStrategy(strat);
+
 
             if (newTrend == newTrend.DOWNWARD) { //current price went above high SD
-                order.setBuy(false);
-                System.out.println("SELL");
-                return order;
+                if (!strategy.isLookingTobuy()) {
+                    order.setBuy(false);
+                    order.setId(strategy.getId());
+                    strategy.setLookingTobuy(true);
+                    System.out.println("SELL");
+                    return order;
+                }
+
             } else if (newTrend == Trend.UPWARD) { //current price went below low SD
-                order.setBuy(true);
-                System.out.println("BUY");
-                return order;
+                if (strategy.isLookingTobuy()) {
+                    order.setBuy(true);
+                    order.setId(strategy.getId());
+                    strategy.setLookingTobuy(false);
+                    System.out.println("BUY");
+                    return order;
+                }
+
             }
         }
-
+        strategyService.writeStrategy(strat);
         return null;
     }
 }
