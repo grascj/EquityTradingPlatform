@@ -43,7 +43,7 @@ public class BollingerBandsAnalyzer implements Analyzer {
     public Order analyze(Strategy strat) {
 
         String ticker = strat.getTicker();
-        Order order = new Order(100, ticker, 100.0);
+        Order order = null;// = new Order(100, ticker, 100.0);
 
         BollingerBands strategy = (BollingerBands) strat;
 
@@ -54,7 +54,22 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
 
+        if(currentPrice > highStandardDeviation && strategy.isLookingTobuy()) { //sell
+            order = new Order(false, currentPrice, strategy.getStockQuantity(), strategy.getTicker());
+            strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+            strategy.setLookingTobuy(true);
+            strategyService.writeStrategy(strategy);
+            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
+        }else if (currentPrice < lowStandardDeviation && strategy.isLookingTobuy()) { //buy
+            order = new Order(true, currentPrice, strategy.getStockQuantity(), strategy.getTicker());
+            strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+            strategy.setLookingTobuy(false);
+            strategyService.writeStrategy(strategy);
+            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
+        }
 
+        return order;
+        /*
         Trend newTrend;
         if (currentPrice > highStandardDeviation) {
             order.setPrice(currentPrice);
@@ -93,9 +108,10 @@ public class BollingerBandsAnalyzer implements Analyzer {
             }
         }
         strategyService.writeStrategy(strat);
-        if (order != null) {
-            tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
-        }
+
+        tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
+
         return null;
+        */
     }
 }

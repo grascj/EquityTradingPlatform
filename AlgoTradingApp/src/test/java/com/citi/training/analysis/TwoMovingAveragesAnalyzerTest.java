@@ -7,6 +7,8 @@ import com.citi.training.entities.TwoMovingAverages;
 import com.citi.training.misc.Trend;
 import com.citi.training.services.MarketUpdateService;
 import com.citi.training.services.StrategyService;
+import com.citi.training.services.TradeService;
+import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +31,10 @@ public class TwoMovingAveragesAnalyzerTest {
     @Mock
     private StrategyService strategyService;
 
+    @Mock
+    private TradeService tradeService;
+
+
     @Before
     public void injectMocks(){
         MockitoAnnotations.initMocks(this);
@@ -42,6 +48,7 @@ public class TwoMovingAveragesAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null,null,40.5));
         TwoMovingAverages tma = new TwoMovingAverages("goog", 100, "test", 10.0, 10, 20);
         tma.setCurrentTrend(Trend.UPWARD);
+        tma.setId(new ObjectId());
         //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 
@@ -65,6 +72,7 @@ public class TwoMovingAveragesAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null,null,38.0));
         TwoMovingAverages tma = new TwoMovingAverages("goog", 100, "test", 10.0, 10, 20);
         tma.setCurrentTrend(Trend.DOWNWARD  );
+        tma.setId(new ObjectId());
         //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 
@@ -88,6 +96,7 @@ public class TwoMovingAveragesAnalyzerTest {
         Mockito.when(marketUpdateService.movingAverage("goog", 20 )).thenReturn(25.0);
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null,null,38.0));
         TwoMovingAverages tma = new TwoMovingAverages("goog", 100, "test", 10.0, 10, 20);
+        tma.setId(new ObjectId());
         tma.setCurrentTrend(Trend.UPWARD      );
         //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
