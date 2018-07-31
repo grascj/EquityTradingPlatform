@@ -6,6 +6,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { Observable } from 'rxjs/Observable';
 import {TwoMovingAverages} from "../models/twoMovingAverages";
+import {Strategy} from "../models/strategy";
 
 @Injectable()
 export class StratService {
@@ -18,8 +19,8 @@ export class StratService {
 
   }
 
-  addStrat(strategy: TwoMovingAverages) {
-    console.log("in servicew for add: " + strategy.ticker + " " + strategy.longAverageSeconds + " " + strategy.shortAverageSeconds);
+  addStrat(strategy: Strategy) {
+    console.log("in servicew for add: " + strategy.ticker);
     return this.http.post(this.baseUrl + '/api/addStrat', strategy)
       .subscribe(res => {
         console.log("post executed with response");

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="margin-bottom: 1.1em;">
   <h3>Add Strategy</h3>
 
 
@@ -14,7 +14,7 @@
 
 
 
-  <div class="container" *ngIf="isTwoMovingAverages">
+  <div class="container" *ngIf="stratSelected">
     <form class="form-inline" (ngSubmit)="addStrategy()">
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
@@ -25,26 +25,35 @@
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
         <label class="mr-sm-2" for="stockQuantity">Quantity</label>
-        <input type="text"  id="stockQuantity" required [(ngModel)]="strategy.stockQuantity" name="numStocks">
+        <input type="text"  id="stockQuantity" required [(ngModel)]="strategy.stockQuantity" name="numStocks" >
 
       </div>
 
+      <!--FOR BOLLINGER BANDS-->
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0" *ngIf="isBollingerBand">
+          <label  class="mr-sm-2" for="avgSeconds">Average Duration</label>
+          <input type="text" class="form-control" id="avgSeconds" required [(ngModel)]="strategy.avgSeconds" name="avgSeconds" >
+        </div>
 
-      <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-        <label  class="mr-sm-2" for="longVal">Long Duration</label>
-        <input type="text" class="form-control" id="longVal" required [(ngModel)]="strategy.longAverageSeconds" name="longVal">
-      </div>
-
-      <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-        <label class="mr-sm-2" for="shortVal">Short Duration</label>
-        <input type="text" class="form-control" id="shortVal" required [(ngModel)]="strategy.shortAverageSeconds" name="shortVal">
-      </div>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0" *ngIf="isBollingerBand">
+          <label class="mr-sm-2" for="standardDeviation">Num Standard Deviations</label>
+          <input type="text" class="form-control" id="standardDeviation" required [(ngModel)]="strategy.standardDeviation" name="standardDeviation" >
+        </div>
 
 
-      <!-- <div class="form-group">
-         <label for="percentDeviation">Percent Deviation</label>
-         <input type="text" class="form-control" id="percentDeviation" required [(ngModel)]="strategy.percentDeviation" name="percentDeviation">
-       </div> -->
+
+      <!--FOR TwoMovingAverages-->
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0" *ngIf="isTwoMovingAverages">
+          <label  class="mr-sm-2" for="longVal">Long Duration</label>
+          <input type="text" class="form-control" id="longVal" required [(ngModel)]="strategy.longAverageSeconds" name="longVal" >
+        </div>
+
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0" *ngIf="isTwoMovingAverages">
+          <label class="mr-sm-2" for="shortVal">Short Duration</label>
+          <input type="text" class="form-control" id="shortVal" required [(ngModel)]="strategy.shortAverageSeconds" name="shortVal" >
+        </div>
+
+
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
         <!--<label class="mr-sm-2" for="exitRule">Exit Rule</label>
@@ -60,11 +69,17 @@
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
         <label class="mr-sm-2" for="exitPercentage">Exit Rule Percentage</label>
-        <input type="text" class="form-control" id="exitPercentage" required [(ngModel)]="strategy.exitPercentage" name="exitPercentage">
+        <input type="text" class="form-control" id="exitPercentage" required [(ngModel)]="strategy.exitPercentage" name="exitPercentage" >
       </div>
 
-      <button type="submit" class="btn btn-success">Submit</button>
+      <!--ticker.valid && numStocks.valid && exitPercentage.valid && ((longVal.valid && shortVal.valid) || (avgSeconds.valid && std.valid)) -->
+<!--      <div *ngIf="ticker.valid && numStocks.valid && ((longVal.valid && shortVal.valid) || (avgSeconds.valid && std.valid))">-->
+       <button type="submit" class="btn btn-success" *ngIf="!isFormValid">Submit</button>
+      <!--       </div>-->
+
     </form>
   </div>
+
+
 
 </div>

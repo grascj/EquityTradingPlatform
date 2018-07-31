@@ -20,7 +20,7 @@ export class PortfolioComponent implements OnInit {
       this.stratObjs = [];
       for(let s of this.strategies) {
         this.stratObjs.push(s);
-        console.log(s.id);
+        //console.log(s.id);
       }
 
     });
