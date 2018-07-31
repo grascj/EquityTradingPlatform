@@ -55,10 +55,10 @@ export class PortfolioComponent implements OnInit {
 
   expandStrat(id: String) {
     let prices =  [];
-    this.tradeService.getAll().subscribe( data => {
+    this.tradeService.getForStrat(id).subscribe( data => {
       this.trades = data;
         for(let t of this.trades) {
-          prices.push(t.order.price)
+          prices.push(t.profitAndLoss)
         }
 
       this.chart = new Chart('canvas', {
