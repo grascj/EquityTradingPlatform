@@ -11,7 +11,7 @@ public class Order {
     private double price;
     private int size;
     private String stock;
-    private ObjectId id;
+    private String id;
 
     public Order() {
 
@@ -38,7 +38,8 @@ public class Order {
         this.price = Double.parseDouble(price);
         this.size = Integer.parseInt(size);
         this.stock = stock;
-        this.id = new ObjectId(id);
+
+        this.id = id;
 
     }
 
@@ -75,11 +76,11 @@ public class Order {
     }
 
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

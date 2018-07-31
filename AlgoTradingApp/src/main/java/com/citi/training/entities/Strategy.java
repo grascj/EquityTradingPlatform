@@ -21,6 +21,12 @@ public abstract class Strategy {
 
     private Double profitAndLoss;
 
+    private double cashValue;
+
+    private double holdingValue;
+
+    private boolean firstTrade = true;
+
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Double profitAndLoss) {
         this.ticker = ticker;
@@ -77,12 +83,23 @@ public abstract class Strategy {
         return profitAndLoss;
     }
 
-    public void setProfitAndLoss(boolean buy, int quantitiy, double price) {
+    public void setProfitAndLoss(boolean buy, int quantity, double price) {
         if (buy) {
-            this.profitAndLoss = this.getProfitAndLoss() - (quantitiy * price);
+            holdingValue = quantity * price;
+            if (firstTrade) {
+                cashValue = cashValue - holdingValue;
+                firstTrade = false;
+            } else {
+                cashValue = cashValue - holdingValue;
+            }
+
         } else {
-            this.profitAndLoss = this.getProfitAndLoss() + (quantitiy * price);
+            cashValue = cashValue + quantity * price;
+            holdingValue = 0;
+
         }
+        this.profitAndLoss = cashValue + holdingValue;
+
 
     }
 }

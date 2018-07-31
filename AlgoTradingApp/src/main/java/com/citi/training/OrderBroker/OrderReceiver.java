@@ -38,6 +38,7 @@ public class OrderReceiver {
     @JmsListener(destination = "OrderBroker_Reply")
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
+
         tradeService.writeTrade(xmlToBrokerMessage(message));
 
     }
@@ -64,10 +65,10 @@ public class OrderReceiver {
         String size = doc.getElementsByTagName("size").item(0).getFirstChild().getTextContent();
         String buy = doc.getElementsByTagName("buy").item(0).getFirstChild().getTextContent();
         String id = doc.getElementsByTagName("id").item(0).getFirstChild().getTextContent();
-        System.out.println(id);
+
         String result = doc.getElementsByTagName("result").item(0).getFirstChild().getTextContent();
 
-        Order bm = new Order(buy, price, size, stock, id);
+        Order bm = new Order(buy, price, size, stock, "test");
         Trade tr = new Trade(bm, result);
 
         return tr;

@@ -38,8 +38,9 @@ public class OrderSender {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 Message msg = session.createTextMessage(brokerMsg.toString());
-                System.out.println(brokerMsg.toString());
+//                System.out.println(brokerMsg.toString());
                 msg.setJMSCorrelationID(UUID.randomUUID().toString());
+                System.out.println(msg.getJMSCorrelationID());
                 return msg;
             }
         };

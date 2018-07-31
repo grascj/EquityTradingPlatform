@@ -73,7 +73,7 @@ public class BollingerBandsAnalyzer implements Analyzer {
             if (newTrend == newTrend.DOWNWARD) { //current price went above high SD
                 if (!strategy.isLookingTobuy()) {
                     order.setBuy(false);
-                    order.setId(strategy.getId());
+                    order.setId(strategy.getId().toString());
                     strategy.setLookingTobuy(true);
                     System.out.println("SELL");
                     return order;
@@ -82,7 +82,7 @@ public class BollingerBandsAnalyzer implements Analyzer {
             } else if (newTrend == Trend.UPWARD) { //current price went below low SD
                 if (strategy.isLookingTobuy()) {
                     order.setBuy(true);
-                    order.setId(strategy.getId());
+                    order.setId(strategy.getId().toString());
                     strategy.setLookingTobuy(false);
                     System.out.println("BUY");
                     return order;

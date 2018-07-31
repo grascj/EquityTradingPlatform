@@ -20,6 +20,7 @@ public class TradeService {
 
 
     public void writeTrade(Trade trade) {
+
         tradeUpdateRepository.save(trade);
     }
 
