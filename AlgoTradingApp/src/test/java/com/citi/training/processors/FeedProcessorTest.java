@@ -38,7 +38,7 @@ public class FeedProcessorTest {
         List<String> tickers = new LinkedList<>();
         tickers.add("goog");
         tickers.add("appl");
-        Mockito.when(marketInformation.getTickers()).thenReturn(tickers);
+        //Mockito.when(marketInformation.getTickers()).thenReturn(tickers);
 
 
     }

@@ -19,7 +19,7 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
     private StrategyService strategyService;
 
     @Autowired
-    TradeService tradeService;
+    private TradeService tradeService;
 
     @Override
     public Order analyze(Strategy strat) {
@@ -74,13 +74,11 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
 
                 }
             }
-
+            strategyService.writeStrategy(strat);
         }
-        strategyService.writeStrategy(strat);
-        if(order != null){
+        if(order !=null) {
             tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
         }
-
         return order;
 
     }
