@@ -34,17 +34,26 @@ public class FeedProcessor {
     MarketInformation marketInformation;
 
 
-
     @Value("${financial.feed.url}")
     String feedURL;
 
     @Scheduled(fixedRate = 250)
     public void pingFeed(){
         try {
+            URL url = new URL(target);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-            String response = sendRequest();
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine + " ");
+            }
+            in.close();
+            con.disconnect();
 
-            List<MarketUpdate> li = parseFeedResponse(response);
+            List<MarketUpdate> li = parseFeedResponse(content.toString());
             marketUpdateService.writeMarketUpdates(li);
 
         } catch (MalformedURLException e) {
@@ -56,11 +65,6 @@ public class FeedProcessor {
         }
     }
 
-    public String sendRequest() throws IOException {
-        URL url = new URL(formURL());
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
         String inputLine;
         StringBuffer content = new StringBuffer();
