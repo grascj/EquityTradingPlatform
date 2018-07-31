@@ -35,7 +35,7 @@ public class TwoMovingAveragesAnalyzerTest {
     }
 
     @Test
-    public void analyze() {
+    public void testMovingAveragesSell() {
         //setup
         Mockito.when(marketUpdateService.movingAverage("goog", 10 )).thenReturn(25.0);
         Mockito.when(marketUpdateService.movingAverage("goog", 20 )).thenReturn(40.0);
@@ -54,5 +54,50 @@ public class TwoMovingAveragesAnalyzerTest {
         Assert.assertEquals(order.getSize(), 100);
         Assert.assertEquals(order.getstock(), "goog");
         Assert.assertEquals(order.isBuy(), false);
+    }
+
+
+    @Test
+    public void testMovingAveragesBuy() {
+        //setup
+        Mockito.when(marketUpdateService.movingAverage("goog", 10 )).thenReturn(40.0);
+        Mockito.when(marketUpdateService.movingAverage("goog", 20 )).thenReturn(25.0);
+        Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null,null,38.0));
+        TwoMovingAverages tma = new TwoMovingAverages("goog", 100, "test", 10.0, 10, 20);
+        tma.setCurrentTrend(Trend.DOWNWARD  );
+        //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
+
+
+        //execute
+        Order order = twoMovingAveragesAnalyzer.analyze(tma);
+
+        //check
+        Assert.assertEquals(order.getPrice(),38.0,0);
+        Assert.assertEquals(tma.getCurrentTrend(), Trend.UPWARD );
+        Assert.assertEquals(order.getSize(), 100);
+        Assert.assertEquals(order.getstock(), "goog");
+        Assert.assertEquals(order.isBuy(), true);
+    }
+
+
+
+    @Test
+    public void testMovingAveragesHold() {
+        //setup
+        Mockito.when(marketUpdateService.movingAverage("goog", 10 )).thenReturn(40.0);
+        Mockito.when(marketUpdateService.movingAverage("goog", 20 )).thenReturn(25.0);
+        Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null,null,38.0));
+        TwoMovingAverages tma = new TwoMovingAverages("goog", 100, "test", 10.0, 10, 20);
+        tma.setCurrentTrend(Trend.UPWARD      );
+        //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
+
+
+        //execute
+        Order order = twoMovingAveragesAnalyzer.analyze(tma);
+
+        //check
+
+        Assert.assertEquals(tma.getCurrentTrend(), Trend.UPWARD     );
+
     }
 }

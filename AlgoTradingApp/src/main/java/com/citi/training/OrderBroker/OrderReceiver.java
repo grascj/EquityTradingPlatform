@@ -4,7 +4,6 @@ import com.citi.training.entities.Order;
 import com.citi.training.entities.Trade;
 import com.citi.training.services.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
@@ -22,29 +21,39 @@ import java.io.StringReader;
 @Component
 public class OrderReceiver {
 
-    int orderCounter = 0;
-    /**
-     * Get a copy of the application context
-     */
-    @Autowired
-    ConfigurableApplicationContext context;
+
     @Autowired
     TradeService tradeService;
 
     /**
-     * When you receive a message, print it out, then shut down the application.
-     * Finally, clean up any ActiveMQ server stuff.
+     * Listens on the OrderBroker_Reply queue for messages from the order broker. Once the method receives an order it converts the order
+     * into a trade and sends it to the database
+     *
+     * @param message Text received from the order broker
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws TransformerException
      */
-    @JmsListener(destination = "OrderBroker_Reply", containerFactory = "myFactory")
+    @JmsListener(destination = "OrderBroker_Reply")
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
-        System.out.println(message);
-        xmlToBrokerMessage(message);
+
         tradeService.writeTrade(xmlToBrokerMessage(message));
 
     }
 
-
+    /**
+     * Converts an order string given by the order broker into a trade that can be sent to the database.
+     * The method searches for the first child text in each xml node. The result tag is added to see if the order was completely filled or not
+     *
+     * @param msg Message string from the order broker
+     * @return
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     * @throws TransformerException
+     */
     public Trade  xmlToBrokerMessage(String msg) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -55,9 +64,11 @@ public class OrderReceiver {
         String price = doc.getElementsByTagName("price").item(0).getFirstChild().getTextContent();
         String size = doc.getElementsByTagName("size").item(0).getFirstChild().getTextContent();
         String buy = doc.getElementsByTagName("buy").item(0).getFirstChild().getTextContent();
+        String id = doc.getElementsByTagName("id").item(0).getFirstChild().getTextContent();
+
         String result = doc.getElementsByTagName("result").item(0).getFirstChild().getTextContent();
 
-        Order bm = new Order(buy, price, size, stock);
+        Order bm = new Order(buy, price, size, stock, "test");
         Trade tr = new Trade(bm, result);
 
         return tr;
@@ -65,9 +76,7 @@ public class OrderReceiver {
 
     }
 
-    public int getOrderCounter() {
-        return orderCounter;
-    }
+
 
 
 }

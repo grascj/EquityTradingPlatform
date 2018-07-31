@@ -1,13 +1,11 @@
 package com.citi.training.analysis;
 
-import com.citi.training.entities.MarketUpdate;
-import com.citi.training.entities.Order;
-import com.citi.training.entities.Strategy;
-import com.citi.training.entities.TwoMovingAverages;
+import com.citi.training.entities.*;
 import com.citi.training.misc.Action;
 import com.citi.training.misc.Trend;
 import com.citi.training.services.MarketUpdateService;
 import com.citi.training.services.StrategyService;
+import com.citi.training.services.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +18,8 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
     @Autowired
     private StrategyService strategyService;
 
+    @Autowired
+    TradeService tradeService;
 
     @Override
     public Order analyze(Strategy strat) {
@@ -43,24 +43,47 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         }
 
         if (newTrend != strategy.getCurrentTrend()) {
-            ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
-            strategyService.writeStrategy(strat);
-            order = new Order(strat.getStockQuantity(), ticker);
-
             MarketUpdate current = marketUpdateService.latestUpdateByTicker(ticker);
-            System.out.println(current.getTicker() + " CURRENT PRICE IS: " + current.getPrice());
-            order.setPrice(current.getPrice());
+            ((TwoMovingAverages) strat).setCurrentTrend(newTrend);
+
+
+            order = new Order(strat.getStockQuantity(), ticker, current.getPrice());
+
 
             if (newTrend == newTrend.DOWNWARD) { //SHORT CROSSED BELOW
-                order.setBuy(false);
-                System.out.println("SELL");
+                if (!strategy.getLookingToBuy()) {
+                    order.setBuy(false);
+
+                    strategy.setLookingToBuy(true);
+                    strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
+                    System.out.println(new Trade(order, "Filled", strat.getId().toString(), strategy.getProfitAndLoss()));
+
+                    System.out.println("SELfdaL");
+
+                }
+
             } else if (newTrend == Trend.UPWARD) { //SHORT CROSSED ABOVE
-                order.setBuy(true);
-                System.out.println("BUY");
+                if (strategy.getLookingToBuy()) {
+                    order.setBuy(true);
+
+                    strategy.setLookingToBuy(false);
+
+                    strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+                    System.out.println(new Trade(order, "Filled", strat.getId().toString(), strategy.getProfitAndLoss()));
+                    System.out.println("BfdaUY");
+
+                }
             }
 
         }
+        strategyService.writeStrategy(strat);
+        if(order != null){
+            tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
+        }
+
         return order;
 
     }
+
+
 }

@@ -41,7 +41,7 @@ public class StrategyProcessor {
 //        strategyService.getStrategies().parallelStream().forEach(analysisExecutor::execute);
 
         strategyService.getStrategies().parallelStream().map(analysisExecutor::execute).filter(Objects::nonNull).forEach(orderSender::send);
-    }
+}
 
 
 
