@@ -56,20 +56,11 @@
 
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-        <div  class="d-inline-block">
-          <a class="btn btn-outline-primary"  id="exitRuleDropdown" ngbDropdownToggle> {{ exitRuleDropdownText }}</a>
-          <div ngbDropdownMenu aria-labelledby="exitRuleDropdown">
-            <a class="dropdown-item" (click)="setExitRule('profit')">Profit</a>
-            <a class="dropdown-item" (click)="setExitRule('loss')">Loss</a>
-          </div>
-        </div>
-
-<!--        <select class="custom-select" id="inputGroupSelect01" required [(ngModel)]="strategy.exitRule">
-          <option selected>Choose...</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>-->
+        <label class="mr-sm-2" for="exitRule">Exit Rule</label>
+        <select class="custom-select" id="exitRule" required [(ngModel)]="strategy.exitRule" name="exitRule">
+          <option value="profit">Profit</option>
+          <option value="loss">Loss</option>
+        </select>
       </div>
 
 
@@ -79,10 +70,8 @@
         <input type="text" class="form-control" id="exitPercentage" required [(ngModel)]="strategy.exitPercentage" name="exitPercentage" >
       </div>
 
-      <!--ticker.valid && numStocks.valid && exitPercentage.valid && ((longVal.valid && shortVal.valid) || (avgSeconds.valid && std.valid)) -->
-<!--      <div *ngIf="ticker.valid && numStocks.valid && ((longVal.valid && shortVal.valid) || (avgSeconds.valid && std.valid))">-->
        <button type="submit" class="btn btn-success">Submit</button>
-      <!--       </div>-->
+
 
     </form>
   </div>
