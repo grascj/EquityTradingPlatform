@@ -40,20 +40,10 @@ public class FeedProcessor {
     @Scheduled(fixedRate = 250)
     public void pingFeed(){
         try {
-            URL url = new URL(target);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine + " ");
-            }
-            in.close();
-            con.disconnect();
+            String response = sendRequest();
 
-            List<MarketUpdate> li = parseFeedResponse(content.toString());
+            List<MarketUpdate> li = parseFeedResponse(response);
             marketUpdateService.writeMarketUpdates(li);
 
         } catch (MalformedURLException e) {
@@ -65,6 +55,11 @@ public class FeedProcessor {
         }
     }
 
+    public String sendRequest() throws IOException {
+        URL url = new URL(formURL());
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
         String inputLine;
         StringBuffer content = new StringBuffer();
@@ -89,7 +84,5 @@ public class FeedProcessor {
         LocalDateTime timestamp = LocalDateTime.now();
         return marketInformation.getTickers().stream().map(x -> new MarketUpdate(timestamp, x, respScanner.nextDouble())).collect(Collectors.toList());
     }
-
-
 
 }
