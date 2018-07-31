@@ -1,13 +1,11 @@
 package com.citi.training.analysis;
 
-import com.citi.training.entities.BollingerBands;
-import com.citi.training.entities.Order;
-import com.citi.training.entities.Strategy;
-import com.citi.training.entities.TwoMovingAverages;
+import com.citi.training.entities.*;
 import com.citi.training.misc.Action;
 import com.citi.training.misc.Trend;
 import com.citi.training.services.MarketUpdateService;
 import com.citi.training.services.StrategyService;
+import com.citi.training.services.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +17,9 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
     @Autowired
     private StrategyService strategyService;
+
+    @Autowired
+    private TradeService tradeService;
 
     /**
      * Utilized the data points given by the bollinger bands strategy to determine if a stock is currently undervalued or overvalued.
@@ -73,8 +74,8 @@ public class BollingerBandsAnalyzer implements Analyzer {
             if (newTrend == newTrend.DOWNWARD) { //current price went above high SD
                 if (!strategy.isLookingTobuy()) {
                     order.setBuy(false);
-                    order.setId(strategy.getId().toString());
-                    strategy.setLookingTobuy(true);
+                    strategy.setLookingTobuy(false);
+                    strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
                     System.out.println("SELL");
                     return order;
                 }
@@ -82,8 +83,9 @@ public class BollingerBandsAnalyzer implements Analyzer {
             } else if (newTrend == Trend.UPWARD) { //current price went below low SD
                 if (strategy.isLookingTobuy()) {
                     order.setBuy(true);
-                    order.setId(strategy.getId().toString());
+
                     strategy.setLookingTobuy(false);
+                    strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
                     System.out.println("BUY");
                     return order;
                 }
@@ -91,6 +93,9 @@ public class BollingerBandsAnalyzer implements Analyzer {
             }
         }
         strategyService.writeStrategy(strat);
+        if (order != null) {
+            tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
+        }
         return null;
     }
 }

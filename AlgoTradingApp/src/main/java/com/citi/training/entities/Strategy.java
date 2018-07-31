@@ -27,6 +27,8 @@ public abstract class Strategy {
 
     private boolean firstTrade = true;
 
+    private double initialvalue = 0;
+
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Double profitAndLoss) {
         this.ticker = ticker;
@@ -92,14 +94,19 @@ public abstract class Strategy {
             } else {
                 cashValue = cashValue - holdingValue;
             }
+            if (initialvalue == 0.0) {
+                initialvalue = holdingValue;
+            }
 
         } else {
             cashValue = cashValue + quantity * price;
             holdingValue = 0;
+            if (initialvalue == 0.0) {
+                initialvalue = cashValue;
+            }
+            this.profitAndLoss = cashValue + holdingValue;
+
 
         }
-        this.profitAndLoss = cashValue + holdingValue;
-
-
     }
 }

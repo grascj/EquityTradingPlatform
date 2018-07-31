@@ -56,7 +56,7 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
 
                     strategy.setLookingToBuy(true);
                     strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
-                    System.out.println(new Trade(order, "Filled", strat.getId().toString(), strategy.getProfitAndLoss()));
+
 
                     System.out.println("SELfdaL");
 
@@ -69,7 +69,7 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
                     strategy.setLookingToBuy(false);
 
                     strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
-                    System.out.println(new Trade(order, "Filled", strat.getId().toString(), strategy.getProfitAndLoss()));
+
                     System.out.println("BfdaUY");
 
                 }
