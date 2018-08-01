@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BollingerBandsAnalyzer implements Analyzer {
+public class BollingerBandsAnalyzer extends Analyzer {
 
     @Autowired
     private MarketUpdateService marketUpdateService;
@@ -49,18 +49,28 @@ public class BollingerBandsAnalyzer implements Analyzer {
 
         Double movingAvg = marketUpdateService.movingAverage(ticker, strategy.getAvgSeconds());
         Double standardDeviation = marketUpdateService.movingStandardDeviation(ticker, strategy.getAvgSeconds(), strategy.getStandardDeviation());
-        Double highStandardDeviation = movingAvg + standardDeviation;
-        Double lowStandardDeviation = movingAvg - standardDeviation;
+        Double highStandardDeviation = movingAvg + standardDeviation * strategy.getStandardDeviation();
+        Double lowStandardDeviation = movingAvg - standardDeviation * strategy.getStandardDeviation();
+
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
+        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice);
+        if (shouldExit(strategy, currentPrice) || strategy.isExit()) {
+            strategy.setExit(true);
+            strategyService.writeStrategy(strat);
+            return null;
+        }
 
-        if(currentPrice > highStandardDeviation && strategy.isLookingTobuy()) { //sell
+        System.out.println(strategy.isLookingTobuy());
+        if (currentPrice > highStandardDeviation && !strategy.isLookingTobuy()) { //sell
+            System.out.println("here");
             order = new Order(false, currentPrice, strategy.getStockQuantity(), strategy.getTicker());
-            strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+            strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
             strategy.setLookingTobuy(true);
             strategyService.writeStrategy(strategy);
             tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
-        }else if (currentPrice < lowStandardDeviation && strategy.isLookingTobuy()) { //buy
+        } else if (currentPrice < lowStandardDeviation && strategy.isLookingTobuy()) { //buy
+            System.out.println("there");
             order = new Order(true, currentPrice, strategy.getStockQuantity(), strategy.getTicker());
             strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
             strategy.setLookingTobuy(false);
@@ -114,4 +124,6 @@ public class BollingerBandsAnalyzer implements Analyzer {
         return null;
         */
     }
+
+
 }

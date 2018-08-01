@@ -21,13 +21,16 @@ public abstract class Strategy {
 
     private Double profitAndLoss;
 
-    private double cashValue;
+    private Double cashValue;
 
-    private double holdingValue;
+    private Double holdingValue;
 
     private boolean firstTrade = true;
 
-    private double initialvalue = 0;
+    private Double initialvalue = 0.0;
+
+
+    private boolean exit = false;
 
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Double profitAndLoss) {
@@ -89,24 +92,59 @@ public abstract class Strategy {
         if (buy) {
             holdingValue = quantity * price;
             if (firstTrade) {
-                cashValue = cashValue - holdingValue;
+                cashValue = 0.0;
+                initialvalue = holdingValue;
                 firstTrade = false;
             } else {
                 cashValue = cashValue - holdingValue;
             }
-            if (initialvalue == 0.0) {
-                initialvalue = holdingValue;
-            }
+
 
         } else {
             cashValue = cashValue + quantity * price;
-            holdingValue = 0;
-            if (initialvalue == 0.0) {
+            if (firstTrade) {
+                holdingValue = 0.0;
                 initialvalue = cashValue;
+                firstTrade = false;
+            } else {
+
+                holdingValue = 0.0;
             }
-            this.profitAndLoss = cashValue + holdingValue;
-
-
         }
+        this.profitAndLoss = cashValue + holdingValue;
     }
+
+    public Double getHoldingValue() {
+        return holdingValue;
+    }
+
+    public void setHoldingValue(Double holdingValue) {
+        this.holdingValue = holdingValue;
+    }
+
+    public Double getInitialvalue() {
+        return initialvalue;
+    }
+
+    public void setInitialvalue(Double initialvalue) {
+        this.initialvalue = initialvalue;
+    }
+
+    public Double getCashValue() {
+        return cashValue;
+    }
+
+    public void setCashValue(Double cashValue) {
+        this.cashValue = cashValue;
+    }
+
+    public boolean isExit() {
+        return exit;
+    }
+
+    public void setExit(boolean exit) {
+        this.exit = exit;
+    }
+
+
 }

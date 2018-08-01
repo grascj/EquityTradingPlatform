@@ -35,7 +35,7 @@ public class OrderReceiver {
      * @throws ParserConfigurationException
      * @throws TransformerException
      */
-    @JmsListener(destination = "OrderBroker_Reply")
+    @JmsListener(destination = "OrderBroker_Repl  y")
     public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         System.out.println("Received transaction");
 

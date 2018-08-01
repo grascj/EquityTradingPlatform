@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TwoMovingAveragesAnalyzer implements Analyzer {
+public class TwoMovingAveragesAnalyzer extends Analyzer {
 
     @Autowired
     private MarketUpdateService marketUpdateService;
@@ -34,16 +34,22 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
 
         Trend newTrend = strategy.getCurrentTrend();
 
+
+
         if (shortAvg > longAvg) {
             newTrend = Trend.UPWARD;
         } else if (shortAvg < longAvg) {
             newTrend = Trend.DOWNWARD;
         }
 
-        if (newTrend != strategy.getCurrentTrend()) {
+        if (newTrend != strategy.getCurrentTrend() || strategy.isExit()) {
             MarketUpdate current = marketUpdateService.latestUpdateByTicker(ticker);
             strategy.setCurrentTrend(newTrend);
-
+            if(shouldExit(strategy, current.getPrice())){
+                strategy.setExit(true);
+                strategyService.writeStrategy(strat);
+                return null;
+            }
             order = new Order(strategy.getStockQuantity(), ticker, current.getPrice());
 
             if (newTrend == newTrend.DOWNWARD && !strategy.getLookingToBuy()) { //SHORT CROSSED BELOW
@@ -63,6 +69,9 @@ public class TwoMovingAveragesAnalyzer implements Analyzer {
         return order;
 
     }
+
+
+
 
 
 }
