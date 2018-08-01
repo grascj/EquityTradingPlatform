@@ -1,9 +1,12 @@
 package com.citi.training.OrderBroker;
 
 import com.citi.training.entities.Order;
+import com.citi.training.entities.Strategy;
 import com.citi.training.entities.Trade;
 import com.citi.training.services.OrderService;
+import com.citi.training.services.StrategyService;
 import com.citi.training.services.TradeService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
@@ -36,6 +39,9 @@ public class OrderReceiver {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    StrategyService strategyService;
+
     /**
      * Listens on the OrderBroker_Reply queue for messages from the order broker. Once the method receives an order it converts the order
      * into a trade and sends it to the database
@@ -51,8 +57,14 @@ public class OrderReceiver {
 
         System.out.println("Received transaction");
         System.out.println("RETURN MESSAGE " + ((TextMessage) message).getText());
-        tradeService.writeTrade(xmlToBrokerMessage(((TextMessage) message).getText()));
+        Order o = xmlToBrokerMessage(((TextMessage) message).getText());
+        System.out.println("IDDD" + message.getJMSCorrelationID());
+        Strategy s = strategyService.stratOnId(new ObjectId(message.getJMSCorrelationID()));
 
+        s.setProfitAndLoss(o.isBuy(), o.getSize(), o.getPrice());
+        Trade t = new Trade(o, o.getResult(), message.getJMSCorrelationID(), s.getProfitAndLoss());
+        tradeService.writeTrade(t);
+        strategyService.writeStrategy(s);
     }
 
     /**
@@ -66,7 +78,7 @@ public class OrderReceiver {
      * @throws SAXException
      * @throws TransformerException
      */
-    public Trade xmlToBrokerMessage(String msg) throws Exception {
+    public Order xmlToBrokerMessage(String msg) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(msg));
@@ -81,9 +93,9 @@ public class OrderReceiver {
         String result = doc.getElementsByTagName("result").item(0).getFirstChild().getTextContent();
 
         Order bm = new Order(buy, price, size, stock);
-        Trade tr = new Trade(bm, result);
+        bm.setResult(result);
 
-        return tr;
+        return bm;
 
 
     }

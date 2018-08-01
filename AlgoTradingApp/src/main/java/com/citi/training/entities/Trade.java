@@ -64,6 +64,13 @@ public class Trade {
         this.profitAndLoss = profitAndLoss;
     }
 
+    public String getStrategyId() {
+        return strategyId;
+    }
+
+    public void setStrategyId(String strategyId) {
+        this.strategyId = strategyId;
+    }
 
     @Override
     public String toString() {

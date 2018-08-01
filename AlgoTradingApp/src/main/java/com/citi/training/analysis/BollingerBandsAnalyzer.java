@@ -62,7 +62,7 @@ public class BollingerBandsAnalyzer extends Analyzer {
         }
 
 
-        order = new Order(strategy.getId().toString(), strategy.getStockQuantity(), ticker, currentPrice);
+        order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, currentPrice);
         if (currentPrice > highStandardDeviation && !strategy.isLookingTobuy()) { //sell
             order.setBuy(false);
             strategy.setLookingTobuy(true);

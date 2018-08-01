@@ -54,7 +54,7 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
                 return null;
             }
 
-            order = new Order(strategy.getId().toString(), strategy.getStockQuantity(), ticker, current.getPrice());
+            order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, current.getPrice());
 
             if (newTrend == newTrend.DOWNWARD && !strategy.getLookingToBuy()) { //SHORT CROSSED BELOW
                 order.setBuy(false);

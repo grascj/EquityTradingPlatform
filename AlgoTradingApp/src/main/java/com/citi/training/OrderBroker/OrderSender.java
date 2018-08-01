@@ -37,7 +37,7 @@ public class OrderSender {
 
 
                 Message msg = session.createTextMessage(brokerMsg.toString());
-                msg.setJMSCorrelationID(brokerMsg.getId().toString());
+                msg.setJMSCorrelationID(brokerMsg.getStratId().toString());
 //                System.out.println(msg);
                 return msg;
             }

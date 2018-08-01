@@ -16,14 +16,16 @@ public class Order {
     @Id
     private ObjectId id;
 
-    private String stratId;
+    private ObjectId stratId;
 
+
+    private String result;
     public Order() {
 
     }
 
 
-    public Order(String stratId, int size, String stock, double price) {
+    public Order(ObjectId stratId, int size, String stock, double price) {
         this.stratId = stratId;
         this.size = size;
         this.price = price;
@@ -92,12 +94,20 @@ public class Order {
         this.id = id;
     }
 
-    public String getStratId() {
+    public ObjectId getStratId() {
         return stratId;
     }
 
-    public void setStratId(String stratId) {
+    public void setStratId(ObjectId stratId) {
         this.stratId = stratId;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 
     @Override
