@@ -56,15 +56,16 @@ public class OrderReceiver {
     public void receiveMessage(Message message) throws Exception {
 
         System.out.println("Received transaction");
-        System.out.println("RETURN MESSAGE " + ((TextMessage) message).getText());
+
         Order o = xmlToBrokerMessage(((TextMessage) message).getText());
-        System.out.println("IDDD" + message.getJMSCorrelationID());
+
         Strategy s = strategyService.stratOnId(new ObjectId(message.getJMSCorrelationID()));
 
         s.setProfitAndLoss(o.isBuy(), o.getSize(), o.getPrice());
         Trade t = new Trade(o, o.getResult(), message.getJMSCorrelationID(), s.getProfitAndLoss());
         tradeService.writeTrade(t);
         strategyService.writeStrategy(s);
+//        System.out.println(s.getLookingtoBuy);
     }
 
     /**

@@ -30,7 +30,7 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
 
         Double shortAvg = marketUpdateService.movingAverage(ticker, strategy.getShortAverageSeconds());
         Double longAvg = marketUpdateService.movingAverage(ticker, strategy.getLongAverageSeconds());
-//        System.out.println("shortAvg: " + shortAvg + " longAvg:" + longAvg);
+        System.out.println("shortAvg: " + shortAvg + " longAvg:" + longAvg );
 
         Trend newTrend = strategy.getCurrentTrend();
 
@@ -53,23 +53,20 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
                 strategyService.writeStrategy(strat);
                 return null;
             }
-
+            System.out.println(current.getPrice());
             order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, current.getPrice());
 
             if (newTrend == newTrend.DOWNWARD && !strategy.getLookingToBuy()) { //SHORT CROSSED BELOW
                 order.setBuy(false);
                 strategy.setLookingToBuy(true);
-//                strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
             } else if (newTrend == Trend.UPWARD && strategy.getLookingToBuy()) { //SHORT CROSSED ABOVE
                 order.setBuy(true);
                 strategy.setLookingToBuy(false);
-//                strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+
             }
             strategyService.writeStrategy(strat);
         }
-//        if (order != null) {
-//            tradeService.writeTrade(new Trade(order, "Filled", strat.getId().toString(), strat.getProfitAndLoss()));
-//        }
+
         return order;
 
     }

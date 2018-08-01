@@ -51,7 +51,7 @@ public class BollingerBandAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 60.0));
         BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
         bb.setId(new ObjectId());
-        bb.setLookingTobuy(false);
+        bb.setLookingToBuy(false);
         //String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 
@@ -75,7 +75,7 @@ public class BollingerBandAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 30.5));
         BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
         bb.setId(new ObjectId());
-        bb.setLookingTobuy(true);
+        bb.setLookingToBuy(true);
         //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 

@@ -54,7 +54,7 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
-//        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice);
+        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice);
         if (shouldExit(strategy, currentPrice) || strategy.isExit()) {
             strategy.setExit(true);
             strategyService.writeStrategy(strat);
@@ -63,16 +63,17 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
 
         order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, currentPrice);
-        if (currentPrice > highStandardDeviation && !strategy.isLookingTobuy()) { //sell
+        if (currentPrice > highStandardDeviation && !strategy.getLookingToBuy()) { //sell
             order.setBuy(false);
-            strategy.setLookingTobuy(true);
+
+            strategy.setLookingToBuy(true);
             strategyService.writeStrategy(strategy);
 
 //            strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
 //            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
-        } else if (currentPrice < lowStandardDeviation && strategy.isLookingTobuy()) { //buy
+        } else if (currentPrice < lowStandardDeviation && strategy.getLookingToBuy()) { //buy
             order.setBuy(true);
-            strategy.setLookingTobuy(false);
+            strategy.setLookingToBuy(false);
             strategyService.writeStrategy(strategy);
 //            strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
 //            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
