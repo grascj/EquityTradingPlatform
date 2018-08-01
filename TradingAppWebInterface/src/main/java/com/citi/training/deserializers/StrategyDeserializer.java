@@ -31,14 +31,14 @@ public class StrategyDeserializer  extends StdDeserializer<Strategy> {
             int shortVal = Integer.parseInt(node.get("shortAverageSeconds").asText());
             int longVal = Integer.parseInt(node.get("longAverageSeconds").asText());
 
-            return new TwoMovingAverages(ticker, numStocks, exitRule, exitPercentage, shortVal, longVal);
+            return new TwoMovingAverages(ticker, numStocks, exitRule, exitPercentage, shortVal, longVal, "");
         }
         else {
             //must be bollinger
             int avgSec = Integer.parseInt(node.get("avgSeconds").asText());
             double std = Double.parseDouble(node.get("standardDeviation").asText());
 
-            return new BollingerBands(ticker, numStocks, exitRule, exitPercentage,  avgSec, std);
+            return new BollingerBands(ticker, numStocks, exitRule, exitPercentage,  avgSec, std, "");
         }
 
 

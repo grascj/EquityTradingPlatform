@@ -33,8 +33,10 @@ public abstract class Strategy {
 
     private Boolean lookingToBuy = true;
 
+    private String name;
 
-    public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage) {
+
+    public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, String name) {
         this.ticker = ticker;
         this.exitRule = exitRule;
         this.exitPercentage = exitPercentage;
@@ -42,6 +44,10 @@ public abstract class Strategy {
         this.cashValue = 0.0;
         this.holdingValue = 0.0;
     }
+
+    public String getName() {  return name;   }
+
+    public void setName(String name) {  this.name = name;  }
 
     public String getId() { return id.toHexString();  }
 

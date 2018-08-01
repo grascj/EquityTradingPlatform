@@ -4,6 +4,7 @@ import {TradeService} from "../services/trade.service";
 import {Strategy} from "../models/strategy";
 import { Chart } from 'chart.js';
 import {Order} from "../models/order";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-portfolio',
@@ -12,13 +13,15 @@ import {Order} from "../models/order";
 })
 export class PortfolioComponent implements OnInit {
   strategies: any;
+  prefName: any;
   stratObjs: Strategy[] = [];
   orderObjs: Order[] = [];
   trades: any;
   chartIsLoading: boolean = true;
   chart: Chart;
+  expandedStrat: String;
 
-  constructor(private stratService: StratService, private tradeService: TradeService) { }
+  constructor(private stratService: StratService, private tradeService: TradeService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.genPortfolio();
@@ -37,6 +40,19 @@ export class PortfolioComponent implements OnInit {
     });
   }
 
+  open(content, strategy: Strategy) {
+    this.prefName = '';
+    this.modalService.open(content).result.then((result) => {
+      if(result != null) {
+        this.stratService.updateName(strategy, result).subscribe( data => {
+          let d: any = data;
+          strategy.name = d.name;
+        });
+        console.log(`Closed with: result ` + result + " and strat name " + strategy.name);
+      }
+
+    });
+  }
 
   getStrategyObj(id) {
     for(let s of this.stratObjs) {
@@ -55,14 +71,14 @@ export class PortfolioComponent implements OnInit {
       s.exit = d.exit;
 
     });
-/*    setTimeout(() => {
-      this.updatePortfolio(id);
-    }, 500);*/
+
 
   }
 
-  expandStrat(id: String) {
+
+  expandStrat(id: String, name: String) {
     this.chartIsLoading = true;
+    this.expandedStrat = name;
     this.orderObjs = [];
     let pAndL =  [];
     let times = [];

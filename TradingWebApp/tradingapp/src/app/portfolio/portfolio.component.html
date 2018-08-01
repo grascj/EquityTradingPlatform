@@ -19,12 +19,10 @@
         <tbody >
         <tr *ngFor="let strat of stratObjs" scope="row">
           <td *ngIf="strat.standardDeviation">Bollinger Bands</td> <td *ngIf="strat.longAverageSeconds">Two Moving Avgs</td>
-          <td>
-            <form class="form-inline" (ngSubmit)="prefNameForm.form.valid && updateName()" #prefNameForm="ngForm">
-              <input type="text" [placeholder]="strat.name" class="form-control" id="prefName" name="prefName" >
-              <button type="submit" class="btn btn-sm btn-success">Update Name</button>
-            </form>
+          <td *ngIf="!strat.name">
+            <button class="btn btn-sm btn-outline-primary" (click)="open(content, strat)">Set Name</button>
           </td>
+          <td *ngIf="strat.name"> {{ strat.name }}</td>
           <td>{{ strat.ticker }}</td>
           <td>{{ strat.stockQuantity }}</td>
           <td>{{ strat.exitRule }}</td>
@@ -32,13 +30,13 @@
           <!--<td *ngIf="!strat.exit">Disable</td>
           <td *ngIf="strat.exit">Enable</td>-->
           <td><button class="btn btn-sm btn-danger" (click)="disableStrat(strat.id)" [disabled]="strat.exit">Terminate</button></td>
-          <td><button class="btn btn-sm btn-primary" (click)="expandStrat(strat.id)">Expand</button></td>
+          <td><button class="btn btn-sm btn-primary" (click)="expandStrat(strat.id, strat.name)">Expand</button></td>
         </tr>
         </tbody>
       </table>
     </div>
     <div *ngIf="!chartIsLoading" class="col col-md-6" >
-      <h5>Strategy P&amp;L</h5>
+      <h5>{{ expandedStrat}} Strategy P&amp;L</h5>
       <canvas id="canvas" >{{ chart }}</canvas>
       <h6>All Trades</h6>
       <table class="table">
@@ -60,3 +58,21 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Set Name</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d(null)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline" (ngSubmit)="prefNameForm.form.valid" #prefNameForm="ngForm">
+      <input type="text" class="form-control" id="prefName" required [(ngModel)]="prefName" name="prefName" >
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class=" btn-sm btn btn-outline-dark" (click)="c(prefName+ '')">Save</button>
+  </div>
+</ng-template>

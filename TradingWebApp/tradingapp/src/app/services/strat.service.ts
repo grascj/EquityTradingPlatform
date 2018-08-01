@@ -25,4 +25,8 @@ export class StratService {
   disableStrategy(id: String, strat: Strategy) {
     return this.http.put(this.baseUrl + '/api/disableStrat/'+id, strat);
   }
+
+  updateName(strategy: Strategy, name: any) {
+    return this.http.put(this.baseUrl + '/api/changeName/'+strategy.id, name);
+  }
 }

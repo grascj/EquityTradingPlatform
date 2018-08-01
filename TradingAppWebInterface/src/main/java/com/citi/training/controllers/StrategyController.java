@@ -43,6 +43,13 @@ public class StrategyController {
         return repository.save(s);
     }
 
+    @PutMapping("/changeName/{id}")
+    public Strategy setName(@PathVariable("id") String id, @RequestBody String name) {
+        Strategy s = repository.findById(id);
+        s.setName(name);
+        return repository.save(s);
+    }
+
     @DeleteMapping("/deleteStrat/{id}")
     public void delete(@PathVariable("id") String id) {
         repository.delete(repository.findById(id));
