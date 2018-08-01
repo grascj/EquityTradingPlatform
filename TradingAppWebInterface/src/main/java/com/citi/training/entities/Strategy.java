@@ -21,12 +21,22 @@ public abstract class Strategy {
 
     private Integer stockQuantity;
 
+    private Double cashValue;
+
+    private Double holdingValue;
+
+    private Boolean firstTrade = true;
+
+    private Double initialvalue = 0.0;
+
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage) {
         this.ticker = ticker;
         this.exitRule = exitRule;
         this.exitPercentage = exitPercentage;
         this.stockQuantity = stockQuantity;
+        this.cashValue = 0.0;
+        this.holdingValue = 0.0;
     }
 
     public String getId() { return id.toHexString();  }
@@ -54,5 +64,21 @@ public abstract class Strategy {
     public Integer getStockQuantity() { return stockQuantity;   }
 
     public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+
+    public Double getCashValue() { return cashValue;  }
+
+    public void setCashValue(Double cashValue) { this.cashValue = cashValue;   }
+
+    public Double getHoldingValue() {  return holdingValue;  }
+
+    public void setHoldingValue(Double holdingValue) {  this.holdingValue = holdingValue;  }
+
+    public Boolean getFirstTrade() {  return firstTrade;   }
+
+    public void setFirstTrade(Boolean firstTrade) {  this.firstTrade = firstTrade;  }
+
+    public Double getInitialvalue() { return initialvalue;  }
+
+    public void setInitialvalue(Double initialvalue) { this.initialvalue = initialvalue;    }
 
 }
