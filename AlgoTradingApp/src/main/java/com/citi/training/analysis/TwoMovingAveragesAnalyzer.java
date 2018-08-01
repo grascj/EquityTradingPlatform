@@ -30,7 +30,7 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
 
         Double shortAvg = marketUpdateService.movingAverage(ticker, strategy.getShortAverageSeconds());
         Double longAvg = marketUpdateService.movingAverage(ticker, strategy.getLongAverageSeconds());
-        System.out.println("shortAvg: " + shortAvg + " longAvg:" + longAvg );
+//        System.out.println("shortAvg: " + shortAvg + " longAvg:" + longAvg );
 
         Trend newTrend = strategy.getCurrentTrend();
 
@@ -48,7 +48,7 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
             /**
              * Exit check
              */
-            if (shouldExit(strategy, current.getPrice())) {
+            if (shouldExit(strategy, current.getPrice()) || strategy.isExit()) {
                 strategy.setExit(true);
                 strategyService.writeStrategy(strat);
                 return null;
