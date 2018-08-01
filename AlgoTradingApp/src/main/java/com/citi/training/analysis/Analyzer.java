@@ -12,7 +12,7 @@ public abstract  class Analyzer {
         Integer quantity = strat.getStockQuantity();
         if (strat.getHoldingValue() != 0.0) {
             Double portfolioValue = quantity * price + strat.getCashValue();
-            System.out.println("port value: " + portfolioValue + "    intitialvalue:   " + strat.getInitialvalue());
+//            System.out.println("port value: " + portfolioValue + "    intitialvalue:   " + strat.getInitialvalue());
             if (portfolioValue < strat.getInitialvalue() * 0.8) {
                 return true;
             }

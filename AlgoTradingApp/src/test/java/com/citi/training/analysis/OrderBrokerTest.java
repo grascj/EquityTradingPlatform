@@ -32,11 +32,6 @@ public class OrderBrokerTest {
 
     }
 
-    @Test
-    public void ReceiveAllOrderTest() {
-        Order order = new Order(true, 10, 12, "GOOG");
-        //os.send(order);
-    }
 
 
 }

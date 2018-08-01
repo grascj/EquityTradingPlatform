@@ -27,7 +27,7 @@ public abstract class Strategy {
 
     private boolean firstTrade = true;
 
-    private Double initialvalue = 0.0;
+    private Double initialValue = 0.0;
 
 
     private boolean exit = false;
@@ -39,6 +39,11 @@ public abstract class Strategy {
         this.exitPercentage = exitPercentage;
         this.stockQuantity = stockQuantity;
         this.profitAndLoss = profitAndLoss;
+        this.cashValue = 0.0;
+        this.holdingValue = 0.0;
+        this.firstTrade = true;
+        this.initialValue = 0.0;
+
     }
 
     public Strategy() {
@@ -93,18 +98,19 @@ public abstract class Strategy {
             holdingValue = quantity * price;
             if (firstTrade) {
                 cashValue = 0.0;
-                initialvalue = holdingValue;
+                initialValue = holdingValue;
                 firstTrade = false;
             } else {
                 cashValue = cashValue - holdingValue;
             }
 
 
+
         } else {
             cashValue = cashValue + quantity * price;
             if (firstTrade) {
                 holdingValue = 0.0;
-                initialvalue = cashValue;
+                initialValue = cashValue;
                 firstTrade = false;
             } else {
 
@@ -123,11 +129,11 @@ public abstract class Strategy {
     }
 
     public Double getInitialvalue() {
-        return initialvalue;
+        return initialValue;
     }
 
     public void setInitialvalue(Double initialvalue) {
-        this.initialvalue = initialvalue;
+        this.initialValue = initialvalue;
     }
 
     public Double getCashValue() {

@@ -18,8 +18,8 @@ public class BollingerBandsAnalyzer extends Analyzer {
     @Autowired
     private StrategyService strategyService;
 
-    @Autowired
-    private TradeService tradeService;
+//    @Autowired
+//    private TradeService tradeService;
 
     /**
      * Utilized the data points given by the bollinger bands strategy to determine if a stock is currently undervalued or overvalued.
@@ -54,28 +54,28 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
-        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice);
+//        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice);
         if (shouldExit(strategy, currentPrice) || strategy.isExit()) {
             strategy.setExit(true);
             strategyService.writeStrategy(strat);
             return null;
         }
 
-        System.out.println(strategy.isLookingTobuy());
+
+        order = new Order(strategy.getId().toString(), strategy.getStockQuantity(), ticker, currentPrice);
         if (currentPrice > highStandardDeviation && !strategy.isLookingTobuy()) { //sell
-            System.out.println("here");
-            order = new Order(false, currentPrice, strategy.getStockQuantity(), strategy.getTicker());
-            strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
+            order.setBuy(false);
             strategy.setLookingTobuy(true);
             strategyService.writeStrategy(strategy);
-            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
+
+//            strategy.setProfitAndLoss(false, order.getSize(), order.getPrice());
+//            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
         } else if (currentPrice < lowStandardDeviation && strategy.isLookingTobuy()) { //buy
-            System.out.println("there");
-            order = new Order(true, currentPrice, strategy.getStockQuantity(), strategy.getTicker());
-            strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+            order.setBuy(true);
             strategy.setLookingTobuy(false);
             strategyService.writeStrategy(strategy);
-            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
+//            strategy.setProfitAndLoss(true, order.getSize(), order.getPrice());
+//            tradeService.writeTrade(new Trade(order, "Filled", strategy.getId().toString(), strategy.getProfitAndLoss()));
         }
 
         return order;

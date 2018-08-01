@@ -2,44 +2,52 @@ package com.citi.training.entities;
 
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document
 public class Order {
     private boolean buy;
-    private double price;
+    private Double price;
     private int size;
     private String stock;
-    private String id;
+
+    @Id
+    private ObjectId id;
+
+    private String stratId;
 
     public Order() {
 
     }
 
 
-    public Order(int size, String stock, double price) {
+    public Order(String stratId, int size, String stock, double price) {
+        this.stratId = stratId;
         this.size = size;
         this.price = price;
         this.stock = stock;
+        this.id = new ObjectId();
     }
 
-    public Order(boolean buy, double price, int size, String stock) {
-        this.buy = buy;
-        this.price = price;
-        this.size = size;
-        this.stock = stock;
+//    public Order(String stratId, boolean buy, double price, int size, String stock) {
+//        this.stratId = stratId;
+//        this.buy = buy;
+//        this.price = price;
+//        this.size = size;
+//        this.stock = stock;
+//        this.id = new ObjectId();
+//
+//    }
 
-    }
 
-
-    public Order(String buy, String price, String size, String stock, String id) {
+    public Order(String buy, String price, String size, String stockd) {
         this.buy = Boolean.parseBoolean(buy);
         this.price = Double.parseDouble(price);
         this.size = Integer.parseInt(size);
         this.stock = stock;
 
-        this.id = id;
 
     }
 
@@ -76,12 +84,20 @@ public class Order {
     }
 
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public String getStratId() {
+        return stratId;
+    }
+
+    public void setStratId(String stratId) {
+        this.stratId = stratId;
     }
 
     @Override
@@ -90,7 +106,7 @@ public class Order {
 
         return "<trade>\n" +
                 "<buy>" + buy + "</buy>\n" +
-                "<id>" + id + "</id>\n" +
+                "<id>" + "0" + "</id>\n" +
                 "<price>" + price + "</price>\n" +
                 "<size>" + size + "</size>\n" +
                 "<stock>" + stock + "</stock>\n" +

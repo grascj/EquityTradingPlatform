@@ -2,20 +2,28 @@ package com.citi.training.OrderBroker;
 
 import com.citi.training.entities.Order;
 import com.citi.training.entities.Trade;
+import com.citi.training.services.OrderService;
 import com.citi.training.services.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.jms.Message;
+import javax.jms.TextMessage;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 
 @Component
@@ -24,6 +32,9 @@ public class OrderReceiver {
 
     @Autowired
     TradeService tradeService;
+
+    @Autowired
+    OrderService orderService;
 
     /**
      * Listens on the OrderBroker_Reply queue for messages from the order broker. Once the method receives an order it converts the order
@@ -35,11 +46,12 @@ public class OrderReceiver {
      * @throws ParserConfigurationException
      * @throws TransformerException
      */
-    @JmsListener(destination = "OrderBroker_Repl  y")
-    public void receiveMessage(String message) throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        System.out.println("Received transaction");
+    @JmsListener(destination = "OrderBroker_Reply")
+    public void receiveMessage(Message message) throws Exception {
 
-        tradeService.writeTrade(xmlToBrokerMessage(message));
+        System.out.println("Received transaction");
+        System.out.println("RETURN MESSAGE " + ((TextMessage) message).getText());
+        tradeService.writeTrade(xmlToBrokerMessage(((TextMessage) message).getText()));
 
     }
 
@@ -54,21 +66,21 @@ public class OrderReceiver {
      * @throws SAXException
      * @throws TransformerException
      */
-    public Trade  xmlToBrokerMessage(String msg) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public Trade xmlToBrokerMessage(String msg) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(msg));
         org.w3c.dom.Document doc = builder.parse(is);
+
 
         String stock = doc.getElementsByTagName("stock").item(0).getFirstChild().getTextContent();
         String price = doc.getElementsByTagName("price").item(0).getFirstChild().getTextContent();
         String size = doc.getElementsByTagName("size").item(0).getFirstChild().getTextContent();
         String buy = doc.getElementsByTagName("buy").item(0).getFirstChild().getTextContent();
         String id = doc.getElementsByTagName("id").item(0).getFirstChild().getTextContent();
-
         String result = doc.getElementsByTagName("result").item(0).getFirstChild().getTextContent();
 
-        Order bm = new Order(buy, price, size, stock, "test");
+        Order bm = new Order(buy, price, size, stock);
         Trade tr = new Trade(bm, result);
 
         return tr;
@@ -76,7 +88,14 @@ public class OrderReceiver {
 
     }
 
-
+    public static final void prettyPrint(Document xml) throws Exception {
+        Transformer tf = TransformerFactory.newInstance().newTransformer();
+        tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        tf.setOutputProperty(OutputKeys.INDENT, "yes");
+        Writer out = new StringWriter();
+        tf.transform(new DOMSource(xml), new StreamResult(out));
+//        System.out.println(out.toString());
+    }
 
 
 }
