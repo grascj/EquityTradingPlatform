@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {PortfolioComponent} from "./portfolio/portfolio.component";
+
 
 @Component({
   selector: 'app-root',
@@ -8,4 +10,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent {
   title = 'Equities Trading Platform';
+  @Input() idToAdd: String;
+  @ViewChild(PortfolioComponent) p: PortfolioComponent;
+
+  updateFromChild(event: String) {
+    this.p.genPortfolio();
+  }
+
 }

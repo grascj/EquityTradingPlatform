@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {StratService} from '../services/strat.service';
 import {Strategy} from "../models/strategy";
 import {TwoMovingAverages} from "../models/twoMovingAverages";
 import {BollingerBands} from "../models/bollingerBands";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-add-strat',
@@ -17,9 +16,8 @@ export class AddStratComponent implements OnInit {
   stratSelected: boolean = false;
   strategy: Strategy;
   isFormValid: boolean = false;
+  @Output() idToAddChange = new EventEmitter<String>();
 
-
-  //movingAveragesStrat: TwoMovingAverages;
 
   constructor(private addService: StratService) { }
 
@@ -32,15 +30,18 @@ export class AddStratComponent implements OnInit {
 
   addStrategy() {
     console.log("Form submitted");
-    this.addService.addStrat(this.strategy);
+    this.addService.addStrat(this.strategy)
+      .subscribe(data => {
+        let s: any = data;
+        //inidcate to parent component that a new strategy had been added
+        this.idToAddChange.emit(s.id);
+      }, (err) => {
+        console.log(err);
+      });
+
     //reset
     this.stratSelected = false;
-    this.exitRuleDropdownText = "Exit Rule";
-    this.isFormValid = false;
 
-    if(this.isFormValid) {
-
-    }
 
 
   }
@@ -59,9 +60,5 @@ export class AddStratComponent implements OnInit {
     this.strategy = new BollingerBands();
   }
 
-  setExitRule(rule: string) {
-    this.strategy.exitRule = rule;
-    this.exitRuleDropdownText = rule.toUpperCase();
-  }
 
 }

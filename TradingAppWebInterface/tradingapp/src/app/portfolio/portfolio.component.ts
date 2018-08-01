@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {StratService} from "../services/strat.service";
 import {TradeService} from "../services/trade.service";
 import {Strategy} from "../models/strategy";
@@ -14,11 +14,16 @@ export class PortfolioComponent implements OnInit {
   stratObjs: Strategy[] = [];
   trades: any;
   chartIsLoading: boolean = true;
-  chart = []
+  chart = [];
 
   constructor(private stratService: StratService, private tradeService: TradeService) { }
 
   ngOnInit() {
+    this.genPortfolio();
+
+  }
+
+  genPortfolio() {
     this.stratService.getAll().subscribe( data => {
       this.strategies = data;
       this.stratObjs = [];
@@ -28,8 +33,8 @@ export class PortfolioComponent implements OnInit {
       }
 
     });
-
   }
+
 
   updatePortfolio(id) {
     let stratObjHolder = [];
@@ -38,11 +43,11 @@ export class PortfolioComponent implements OnInit {
         stratObjHolder.push(s);
       }
     }
-    console.log(this.stratObjs.length);
-    console.log("Updating...");
+    //console.log(this.stratObjs.length);
+    //console.log("Updating...");
 
      this.stratObjs =  stratObjHolder;
-    console.log(this.stratObjs.length);
+    //console.log(this.stratObjs.length);
   }
 
   deleteStrat(id: String) {
