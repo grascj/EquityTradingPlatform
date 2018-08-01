@@ -1,7 +1,7 @@
 <div class="container">
   <h3>Your Portfolio</h3>
 
-  <div *ngIf="chart && !chartIsLoading" style="margin: 0.1em;" width="100%">
+  <div *ngIf="!chartIsLoading" style="margin: 0.1em;" width="100%">
     <h5>Strategy P&amp;L</h5>
     <canvas id="canvas" >{{ chart }}</canvas>
   </div>

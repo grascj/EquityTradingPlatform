@@ -14,7 +14,7 @@ export class PortfolioComponent implements OnInit {
   stratObjs: Strategy[] = [];
   trades: any;
   chartIsLoading: boolean = true;
-  chart = [];
+  chart: Chart;
 
   constructor(private stratService: StratService, private tradeService: TradeService) { }
 
@@ -68,7 +68,9 @@ export class PortfolioComponent implements OnInit {
           pAndL.push(t.profitAndLoss)
           times.push(t.timeStamp.hour + ":" + t.timeStamp.minute);
         }
-
+        if(this.chart !== undefined) {
+          this.chart.destroy();
+        }
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
