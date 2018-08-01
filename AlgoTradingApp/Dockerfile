@@ -1,4 +1,4 @@
-FROM openjdk:8-alpine as build
+FROM docker.conygre.com:5000/java as build
 
 WORKDIR /app
 
