@@ -47,6 +47,11 @@ export class AddStratComponent implements OnInit {
       this.strategy.exitPercentage = 0.2;
     }
 
+    if(this.strategy.name == null) {
+      this.strategy.name = "";
+    }
+
+    //api call
     this.addService.addStrat(this.strategy)
       .subscribe(data => {
         let s: any = data;

@@ -43,6 +43,7 @@ public abstract class Strategy {
         this.stockQuantity = stockQuantity;
         this.cashValue = 0.0;
         this.holdingValue = 0.0;
+        this.name = name;
     }
 
     public String getName() {  return name;   }

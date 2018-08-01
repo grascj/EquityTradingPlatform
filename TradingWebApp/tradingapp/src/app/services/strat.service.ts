@@ -18,7 +18,7 @@ export class StratService {
   }
 
   addStrat(strategy: Strategy) {
-    console.log("in servicew for add: " + strategy.ticker);
+    console.log("in servicew for add: " + strategy.ticker + "  " + strategy.name);
     return this.http.post(this.baseUrl + '/api/addStrat', strategy);
   }
 
