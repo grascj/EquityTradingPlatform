@@ -57,7 +57,7 @@ export class PortfolioComponent implements OnInit {
     this.chartIsLoading = true;
     let pAndL =  [];
     let times = [];
-    this.tradeService.getForStrat(id).subscribe( data => {
+    this.tradeService.getAllForStrat(id).subscribe( data => {
       this.trades = data;
         for(let t of this.trades) {
           pAndL.push(t.profitAndLoss)
