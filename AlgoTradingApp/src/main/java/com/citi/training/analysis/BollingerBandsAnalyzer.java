@@ -55,7 +55,7 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
         System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice + " looking to buy? " + strategy.getLookingToBuy());
-        if (shouldExit(strategy, currentPrice) || strategy.isExit()) {
+        if (shouldExit(strategy, currentPrice, strategy.getExitPercentage(), strategy.getExitRule()) || strategy.isExit()) {
             strategy.setExit(true);
             strategyService.writeStrategy(strat);
             return null;

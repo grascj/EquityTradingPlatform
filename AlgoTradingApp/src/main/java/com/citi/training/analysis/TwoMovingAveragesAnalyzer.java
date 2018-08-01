@@ -48,7 +48,7 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
             /**
              * Exit check
              */
-            if (shouldExit(strategy, current.getPrice()) || strategy.isExit()) {
+            if (shouldExit(strategy, current.getPrice(), strategy.getExitPercentage(), strategy.getExitRule()) || strategy.isExit()) {
                 strategy.setExit(true);
                 strategyService.writeStrategy(strat);
                 return null;

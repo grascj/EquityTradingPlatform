@@ -30,7 +30,7 @@ public class TradeController {
     @GetMapping("/trades/{id}")
     public List<Trade> getTradesByResultAndId(@PathVariable("id") String id) {
         List<Trade> allTrades = new ArrayList<>();
-        repository.findByStrategyIdAndResult(id, "Filled").forEach(allTrades::add);
+        repository.findByStrategyIdAndResult(id, "FILLED").forEach(allTrades::add);
         return allTrades;
     }
 
