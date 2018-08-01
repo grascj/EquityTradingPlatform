@@ -1,33 +1,62 @@
-<div class="container">
-  <h3>Your Portfolio</h3>
-
-  <div *ngIf="!chartIsLoading" style="margin: 0.1em;" width="100%">
-    <h5>Strategy P&amp;L</h5>
-    <canvas id="canvas" >{{ chart }}</canvas>
+<div class="contents topElement" style="padding: 1em; height:80vh !important; overflow-y: scroll;">
+  <h3 >Your Portfolio</h3>
+  <div class="row">
+    <div class="col col-md-6">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Strategy Type</th>
+          <th scope="col">Name</th>
+          <th scope="col">Ticker</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Exit Rule</th>
+          <th scope="col">Exit %</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr *ngFor="let strat of stratObjs" scope="row">
+          <td *ngIf="strat.standardDeviation">Bollinger Bands</td> <td *ngIf="strat.longAverageSeconds">Two Moving Avgs</td>
+          <td>
+            <form class="form-inline" (ngSubmit)="prefNameForm.form.valid && updateName()" #prefNameForm="ngForm">
+              <input type="text" [placeholder]="strat.name" class="form-control" id="prefName" name="prefName" >
+              <button type="submit" class="btn btn-sm btn-success">Update Name</button>
+            </form>
+          </td>
+          <td>{{ strat.ticker }}</td>
+          <td>{{ strat.stockQuantity }}</td>
+          <td>{{ strat.exitRule }}</td>
+          <td>{{ strat.exitPercentage }}</td>
+          <!--<td *ngIf="!strat.exit">Disable</td>
+          <td *ngIf="strat.exit">Enable</td>-->
+          <td><button class="btn btn-sm btn-danger" (click)="disableStrat(strat.id)" [disabled]="strat.exit">Terminate</button></td>
+          <td><button class="btn btn-sm btn-primary" (click)="expandStrat(strat.id)">Expand</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!chartIsLoading" class="col col-md-6" >
+      <h5>Strategy P&amp;L</h5>
+      <canvas id="canvas" >{{ chart }}</canvas>
+      <h6>All Trades</h6>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Time</th>
+          <th scope="col">Buy/Sell</th>
+          <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr *ngFor="let order of orderObjs" scope="row">
+          <td>{{ order.timest }}</td>
+          <td *ngIf="order.buy"> Buy </td>
+          <td *ngIf="!order.buy"> Sell </td>
+          <td>{{ order.price }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
-
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">Strategy Type</th>
-      <th scope="col">Ticker</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Exit Rule</th>
-      <th scope="col">Percentage</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let strat of stratObjs" scope="row">
-      <td *ngIf="strat.standardDeviation">Bollinger Bands</td> <td *ngIf="strat.longAverageSeconds">Two Moving Avgs</td>
-      <td>{{ strat.ticker }}</td>
-      <td>{{ strat.stockQuantity }}</td>
-      <td>{{ strat.exitRule }}</td>
-      <td>{{ strat.exitPercentage }}</td>
-      <td><button class="btn btn-danger" (click)="deleteStrat(strat.id)">Disable</button></td>
-      <td><button class="btn btn-primary" (click)="expandStrat(strat.id)">Expand</button></td>
-    </tr>
-    </tbody>
-  </table>
 </div>

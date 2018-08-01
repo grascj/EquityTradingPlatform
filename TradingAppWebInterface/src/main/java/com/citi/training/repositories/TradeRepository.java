@@ -11,7 +11,7 @@ public interface TradeRepository extends MongoRepository<Trade, ObjectId> {
 
     List<Trade> findByResult(String result);
 
-    List<Trade> findByStrategyIdAndResult(String strategyId, String result);
+    List<Trade> findByStrategyId(String strategyId);
 
-    List<Trade> findByIdAndResultAndTimeStampBetween(String strategyId, String result, LocalDateTime anHrAgo, LocalDateTime now);
+    List<Trade> findByIdAndAndTimeStampBetween(String strategyId, LocalDateTime anHrAgo, LocalDateTime now);
 }

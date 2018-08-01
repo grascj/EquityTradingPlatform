@@ -10,26 +10,43 @@ import {BollingerBands} from "../models/bollingerBands";
   styleUrls: ['./add-strat.component.css']
 })
 export class AddStratComponent implements OnInit {
-  exitRuleDropdownText: string;
+  errorMsg: string;
   isTwoMovingAverages: boolean;
   isBollingerBand: boolean;
   stratSelected: boolean = false;
   strategy: Strategy;
-  isFormValid: boolean = false;
+  displayError: boolean = false;
   @Output() idToAddChange = new EventEmitter<String>();
 
 
   constructor(private addService: StratService) { }
 
   ngOnInit() {
-    this.exitRuleDropdownText = "Exit Rule";
+    this.errorMsg = "";
+    this.displayError = false;
    this.isTwoMovingAverages = false;
    this.isBollingerBand = false;
 
   }
 
   addStrategy() {
-    console.log("Form submitted");
+    //Form validation
+    if(this.strategy.exitRule == "loss" && this.strategy.exitPercentage > 0.2) {
+      //implemet Citi cap
+      this.strategy.exitRule = "loss";
+      this.strategy.exitPercentage = 0.2;
+      this.errorMsg = "Loss percentage too high...defaulting to 20% Loss cap";
+      this.displayError = true;
+    }
+    if(this.strategy.exitRule == null || this.strategy.exitPercentage == null) {
+      //user opted to not put an exit rule
+      this.errorMsg = "No Exit Rule specified, defaulting to 20% Loss";
+      this.displayError = true;
+      //set default
+      this.strategy.exitRule = "loss";
+      this.strategy.exitPercentage = 0.2;
+    }
+
     this.addService.addStrat(this.strategy)
       .subscribe(data => {
         let s: any = data;
@@ -58,6 +75,11 @@ export class AddStratComponent implements OnInit {
     this.isTwoMovingAverages = false;
     this.isBollingerBand = true;
     this.strategy = new BollingerBands();
+  }
+
+  closeErrorMsg() {
+    this.errorMsg = "";
+    this.displayError = false;
   }
 
 

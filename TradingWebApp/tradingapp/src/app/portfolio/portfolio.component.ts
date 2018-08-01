@@ -3,6 +3,7 @@ import {StratService} from "../services/strat.service";
 import {TradeService} from "../services/trade.service";
 import {Strategy} from "../models/strategy";
 import { Chart } from 'chart.js';
+import {Order} from "../models/order";
 
 @Component({
   selector: 'app-portfolio',
@@ -12,6 +13,7 @@ import { Chart } from 'chart.js';
 export class PortfolioComponent implements OnInit {
   strategies: any;
   stratObjs: Strategy[] = [];
+  orderObjs: Order[] = [];
   trades: any;
   chartIsLoading: boolean = true;
   chart: Chart;
@@ -36,37 +38,43 @@ export class PortfolioComponent implements OnInit {
   }
 
 
-  updatePortfolio(id) {
-    let stratObjHolder = [];
+  getStrategyObj(id) {
     for(let s of this.stratObjs) {
-      if(s.id != id) {
-        stratObjHolder.push(s);
+      if(s.id == id) {
+        return s;
       }
     }
-    //console.log(this.stratObjs.length);
-    //console.log("Updating...");
-
-     this.stratObjs =  stratObjHolder;
-    //console.log(this.stratObjs.length);
   }
 
-  deleteStrat(id: String) {
-    this.stratService.deleteStrategy(id);
-    setTimeout(() => {
+  disableStrat(id: String) {
+    console.log("Trying to disable...");
+    let s: Strategy = this.getStrategyObj(id);
+    this.stratService.disableStrategy(id, s).subscribe( data => {
+      //confirm on UI
+      let d: any = data;
+      s.exit = d.exit;
+
+    });
+/*    setTimeout(() => {
       this.updatePortfolio(id);
-    }, 500);
+    }, 500);*/
 
   }
 
   expandStrat(id: String) {
     this.chartIsLoading = true;
+    this.orderObjs = [];
     let pAndL =  [];
     let times = [];
+    let o: Order;
     this.tradeService.getAllForStrat(id).subscribe( data => {
       this.trades = data;
         for(let t of this.trades) {
+          o = t.order;
+          o.timest = t.timeStamp.hour + ":" + t.timeStamp.minute;
+          this.orderObjs.push(o);
           pAndL.push(t.profitAndLoss)
-          times.push(t.timeStamp.hour + ":" + t.timeStamp.minute);
+          times.push(o.timest);
         }
         if(this.chart !== undefined) {
           this.chart.destroy();
@@ -103,7 +111,13 @@ export class PortfolioComponent implements OnInit {
       }
     );
     this.chartIsLoading = false;
+    this.scrollTo('topElement');
 
+  }
 
+  scrollTo(className: string):void {
+    const elementList = document.querySelectorAll('.' + className);
+    const element = elementList[0];
+    element.scrollIntoView({ behavior: 'smooth' });
   }
 }

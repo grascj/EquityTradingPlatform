@@ -29,6 +29,10 @@ public abstract class Strategy {
 
     private Double initialvalue = 0.0;
 
+    private Boolean exit = false;
+
+    private Boolean lookingToBuy = true;
+
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage) {
         this.ticker = ticker;
@@ -80,5 +84,13 @@ public abstract class Strategy {
     public Double getInitialvalue() { return initialvalue;  }
 
     public void setInitialvalue(Double initialvalue) { this.initialvalue = initialvalue;    }
+
+    public Boolean getExit() {  return exit;  }
+
+    public void setExit(Boolean exit) { this.exit = exit; }
+
+    public Boolean getLookingToBuy() {   return lookingToBuy;  }
+
+    public void setLookingToBuy(Boolean lookingToBuy) {   this.lookingToBuy = lookingToBuy;  }
 
 }
