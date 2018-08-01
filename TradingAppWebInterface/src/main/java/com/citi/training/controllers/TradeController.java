@@ -5,6 +5,10 @@ import com.citi.training.repositories.TradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +22,26 @@ public class TradeController {
 
     @GetMapping("/trades")
     public List<Trade> getTradesByResult() {
-        List<Trade> allTrades = new ArrayList<>();
-        repository.findByResult("FILLED").forEach(allTrades::add);
+        List<Trade> allTrades = new ArrayList<Trade>();
+        repository.findByResult("Filled").forEach(allTrades::add);
         return allTrades;
     }
 
     @GetMapping("/trades/{id}")
     public List<Trade> getTradesByResultAndId(@PathVariable("id") String id) {
-
-        //TODO
         List<Trade> allTrades = new ArrayList<>();
-        repository.findAll().forEach(allTrades::add);
+        repository.findByStrategyIdAndResult(id, "Filled").forEach(allTrades::add);
+        return allTrades;
+    }
+
+    @GetMapping("/recentTrades/{id}")
+    public List<Trade> getTradesOfPastHr(@PathVariable("id") String id) {
+        List<Trade> allTrades = new ArrayList<>();
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime anHrAgo = currentTime.minusHours(1);
+        //System.out.println(currentTime.toString() + " and an hour ago: " + anHrAgo.toString());
+        repository.findByIdAndResultAndTimeStampBetween(id, "Filled", anHrAgo, currentTime).forEach(allTrades::add);
+        //System.out.println("SIZE " + allTrades.size());
         return allTrades;
     }
 }

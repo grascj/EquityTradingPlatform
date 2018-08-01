@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {StratService} from "../services/strat.service";
 import {TradeService} from "../services/trade.service";
 import {Strategy} from "../models/strategy";
@@ -13,12 +13,17 @@ export class PortfolioComponent implements OnInit {
   strategies: any;
   stratObjs: Strategy[] = [];
   trades: any;
-
-  chart = []
+  chartIsLoading: boolean = true;
+  chart: Chart;
 
   constructor(private stratService: StratService, private tradeService: TradeService) { }
 
   ngOnInit() {
+    this.genPortfolio();
+
+  }
+
+  genPortfolio() {
     this.stratService.getAll().subscribe( data => {
       this.strategies = data;
       this.stratObjs = [];
@@ -28,8 +33,8 @@ export class PortfolioComponent implements OnInit {
       }
 
     });
-
   }
+
 
   updatePortfolio(id) {
     let stratObjHolder = [];
@@ -38,11 +43,11 @@ export class PortfolioComponent implements OnInit {
         stratObjHolder.push(s);
       }
     }
-    console.log(this.stratObjs.length);
-    console.log("Updating...");
+    //console.log(this.stratObjs.length);
+    //console.log("Updating...");
 
      this.stratObjs =  stratObjHolder;
-    console.log(this.stratObjs.length);
+    //console.log(this.stratObjs.length);
   }
 
   deleteStrat(id: String) {
@@ -54,20 +59,25 @@ export class PortfolioComponent implements OnInit {
   }
 
   expandStrat(id: String) {
-    let prices =  [];
-    this.tradeService.getAll().subscribe( data => {
+    this.chartIsLoading = true;
+    let pAndL =  [];
+    let times = [];
+    this.tradeService.getAllForStrat(id).subscribe( data => {
       this.trades = data;
         for(let t of this.trades) {
-          prices.push(t.order.price)
+          pAndL.push(t.profitAndLoss)
+          times.push(t.timeStamp.hour + ":" + t.timeStamp.minute);
         }
-
+        if(this.chart !== undefined) {
+          this.chart.destroy();
+        }
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: [1, 2, 3, 4, 5, 6, 7, 8],
+          labels: times,
           datasets: [
             {
-              data: prices,
+              data: pAndL,
               borderColor: "#3cba9f",
               fill: false
             }
@@ -85,12 +95,14 @@ export class PortfolioComponent implements OnInit {
               display: true
             }],
           },
-          maintainAspectRatio: false
+          responsive: true,
+          maintainAspectRatio: true
         }
       });
+
       }
     );
-
+    this.chartIsLoading = false;
 
 
   }

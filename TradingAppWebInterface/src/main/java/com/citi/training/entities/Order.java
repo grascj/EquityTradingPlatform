@@ -1,7 +1,9 @@
 package com.citi.training.entities;
 
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 
 @Document
 public class Order {
@@ -9,14 +11,16 @@ public class Order {
     private double price;
     private int size;
     private String stock;
+    private String id;
 
     public Order() {
 
     }
 
 
-    public Order(int size, String stock) {
+    public Order(int size, String stock, double price) {
         this.size = size;
+        this.price = price;
         this.stock = stock;
     }
 
@@ -29,11 +33,13 @@ public class Order {
     }
 
 
-    public Order(String buy, String price, String size, String stock) {
+    public Order(String buy, String price, String size, String stock, String id) {
         this.buy = Boolean.parseBoolean(buy);
         this.price = Double.parseDouble(price);
         this.size = Integer.parseInt(size);
         this.stock = stock;
+
+        this.id = id;
 
     }
 
@@ -70,19 +76,14 @@ public class Order {
     }
 
 
-    @Override
-    public String toString() {
-
-
-        return "<trade>\n" +
-                "<buy>"+buy+"</buy>\n" +
-                "<id>0</id>\n" +
-                "<price>"+price+"</price>\n" +
-                "<size>"+size+"</size>\n" +
-                "<stock>"+stock+"</stock>\n" +
-                "<whenAsDate>2014-07-31T22:33:22.801-04:00</whenAsDate>\n" +
-                "</trade>";
+    public String getId() {
+        return id;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
 
 }
