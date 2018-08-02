@@ -1,7 +1,7 @@
-<div class="contents topElement" style="padding: 1em; height:80vh !important; overflow-y: scroll;">
+<div class="contents" style="padding: 1em; height:80vh !important; overflow-y: scroll;">
   <h3 >Your Portfolio</h3>
-  <div class="row">
-    <div class="col col-md-6">
+  <div class="row topElement">
+    <div class="col col-md-6" style="height:80vh !important; overflow-y: scroll;">
       <table class="table">
         <thead>
         <tr>
@@ -30,14 +30,15 @@
           <!--<td *ngIf="!strat.exit">Disable</td>
           <td *ngIf="strat.exit">Enable</td>-->
           <td><button class="btn btn-sm btn-danger" (click)="disableStrat(strat.id)" [disabled]="strat.exit">Terminate</button></td>
-          <td><button class="btn btn-sm btn-primary" (click)="expandStrat(strat.id, strat.name)">Expand</button></td>
+          <td><button class="btn btn-sm btn-primary" (click)="expandStrat(strat)">Expand</button></td>
         </tr>
         </tbody>
       </table>
     </div>
     <div *ngIf="!chartIsLoading" class="col col-md-6" >
-      <h5>{{ expandedStrat}} Strategy P&amp;L</h5>
+      <h5>{{ expandedStrat.name}} Strategy P&amp;L</h5>
       <canvas id="canvas" >{{ chart }}</canvas>
+      <h6><strong>Details:</strong> {{expandedStrat.stockQuantity}} stocks of {{ expandedStrat.ticker}}; Exit at {{ expandedStrat.exitPercentage}} {{expandedStrat.exitRule}} </h6>
       <h6>All Trades</h6>
       <table class="table">
         <thead>

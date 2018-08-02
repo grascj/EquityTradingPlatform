@@ -19,7 +19,7 @@ export class PortfolioComponent implements OnInit {
   trades: any;
   chartIsLoading: boolean = true;
   chart: Chart;
-  expandedStrat: String;
+  expandedStrat: Strategy;
 
   constructor(private stratService: StratService, private tradeService: TradeService, private modalService: NgbModal) { }
 
@@ -76,14 +76,14 @@ export class PortfolioComponent implements OnInit {
   }
 
 
-  expandStrat(id: String, name: String) {
+  expandStrat(strat: Strategy) {
     this.chartIsLoading = true;
-    this.expandedStrat = name;
+    this.expandedStrat = strat;
     this.orderObjs = [];
     let pAndL =  [];
     let times = [];
     let o: Order;
-    this.tradeService.getAllForStrat(id).subscribe( data => {
+    this.tradeService.getAllForStrat(strat.id).subscribe( data => {
       this.trades = data;
         for(let t of this.trades) {
           o = t.order;

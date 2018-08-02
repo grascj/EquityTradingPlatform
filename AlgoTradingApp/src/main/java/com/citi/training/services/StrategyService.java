@@ -5,8 +5,11 @@ import com.citi.training.entities.*;
 import com.citi.training.repositories.TradeRepository;
 
 import com.citi.training.repositories.StrategyRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,15 @@ public class StrategyService {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    public Strategy stratOnId(ObjectId id) {
+
+
+        Query q = new Query();
+        q.addCriteria(Criteria.where("_id").is(id));
+        Strategy s = mongoTemplate.findOne(q, Strategy.class);
+        return s;
+    }
 
     public void writeStrategies(List<Strategy> strategies) {
         strategyRepository.save(strategies);

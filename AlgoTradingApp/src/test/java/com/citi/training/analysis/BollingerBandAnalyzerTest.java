@@ -48,17 +48,18 @@ public class BollingerBandAnalyzerTest {
         //setup
         Mockito.when(marketUpdateService.movingStandardDeviation("goog", 10, 2.0)).thenReturn(2.0);
         Mockito.when(marketUpdateService.movingAverage("goog", 20)).thenReturn(40.0);
-        Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 40.50));
+        Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 60.0));
         BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
         bb.setId(new ObjectId());
-        //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
+        bb.setLookingToBuy(false);
+        //String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 
         //execute
         Order order = bollingerBandAnalyzer.analyze(bb);
 
         //check
-        Assert.assertEquals(order.getPrice(), 40.5, 0);
+        Assert.assertEquals(order.getPrice(), 60, 0);
         Assert.assertEquals(order.getSize(), 100);
         Assert.assertEquals(order.getstock(), "goog");
         Assert.assertEquals(order.isBuy(), false);
@@ -74,6 +75,7 @@ public class BollingerBandAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 30.5));
         BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
         bb.setId(new ObjectId());
+        bb.setLookingToBuy(true);
         //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 
@@ -81,6 +83,7 @@ public class BollingerBandAnalyzerTest {
         Order order = bollingerBandAnalyzer.analyze(bb);
 
         //check
+
         Assert.assertEquals(order.getPrice(), 30.5, 0);
         Assert.assertEquals(order.getSize(), 100);
         Assert.assertEquals(order.getstock(), "goog");
@@ -88,23 +91,5 @@ public class BollingerBandAnalyzerTest {
 
     }
 
-    @Test
-    public void testBollingerBandsHold() {
 
-        //setup
-        Mockito.when(marketUpdateService.movingAverage("goog", 10)).thenReturn(40.0);
-        Mockito.when(marketUpdateService.movingStandardDeviation("goog", 10, 2.0)).thenReturn(2.0);
-        Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 40.0));
-        BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
-        bb.setId(new ObjectId());
-        //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
-
-
-        //execute
-        Order order = bollingerBandAnalyzer.analyze(bb);
-
-        //check
-
-
-    }
 }

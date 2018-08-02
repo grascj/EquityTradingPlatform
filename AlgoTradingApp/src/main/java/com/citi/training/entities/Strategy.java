@@ -27,11 +27,12 @@ public abstract class Strategy {
 
     private boolean firstTrade = true;
 
-    private Double initialvalue = 0.0;
+    private Double initialValue = 0.0;
 
 
     private boolean exit = false;
 
+    private Boolean lookingToBuy;
 
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Double profitAndLoss) {
@@ -40,6 +41,12 @@ public abstract class Strategy {
         this.exitPercentage = exitPercentage;
         this.stockQuantity = stockQuantity;
         this.profitAndLoss = profitAndLoss;
+        this.cashValue = 0.0;
+        this.holdingValue = 0.0;
+        this.firstTrade = true;
+        this.initialValue = 0.0;
+        this.lookingToBuy = true;
+
     }
 
     public Strategy() {
@@ -94,7 +101,7 @@ public abstract class Strategy {
             holdingValue = quantity * price;
             if (firstTrade) {
                 cashValue = 0.0;
-                initialvalue = holdingValue;
+                initialValue = holdingValue;
                 firstTrade = false;
             } else {
                 cashValue = cashValue - holdingValue;
@@ -105,7 +112,7 @@ public abstract class Strategy {
             cashValue = cashValue + quantity * price;
             if (firstTrade) {
                 holdingValue = 0.0;
-                initialvalue = cashValue;
+                initialValue = cashValue;
                 firstTrade = false;
             } else {
 
@@ -124,11 +131,11 @@ public abstract class Strategy {
     }
 
     public Double getInitialvalue() {
-        return initialvalue;
+        return initialValue;
     }
 
     public void setInitialvalue(Double initialvalue) {
-        this.initialvalue = initialvalue;
+        this.initialValue = initialvalue;
     }
 
     public Double getCashValue() {
@@ -147,5 +154,29 @@ public abstract class Strategy {
         this.exit = exit;
     }
 
+    public Boolean getLookingToBuy() {
+        return lookingToBuy;
+    }
 
+    public void setLookingToBuy(Boolean lookingToBuy) {
+        this.lookingToBuy = lookingToBuy;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Strategy{" +
+                "id=" + id +
+                ", ticker='" + ticker + '\'' +
+                ", exitRule='" + exitRule + '\'' +
+                ", exitPercentage=" + exitPercentage +
+                ", stockQuantity=" + stockQuantity +
+                ", profitAndLoss=" + profitAndLoss +
+                ", cashValue=" + cashValue +
+                ", holdingValue=" + holdingValue +
+                ", firstTrade=" + firstTrade +
+                ", initialValue=" + initialValue +
+                ", exit=" + exit +
+                '}';
+    }
 }

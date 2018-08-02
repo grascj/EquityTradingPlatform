@@ -31,7 +31,7 @@ public class StrategyProcessor {
     OrderSender orderSender;
 
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 2500)
     public void executeStrategies(){
 
 //        List<Strategy> li = new LinkedList<>();
