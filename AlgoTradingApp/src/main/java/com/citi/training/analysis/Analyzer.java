@@ -9,23 +9,20 @@ public abstract class Analyzer {
     abstract Order analyze(Strategy strat);
 
     public Boolean shouldExit(Strategy strat, Double price, Double exitPercentage, String exitRule) {
-        Integer quantity = strat.getStockQuantity();
-        if (strat.getHoldingValue() != 0.0) {
-            Double portfolioValue = quantity * price + strat.getCashValue();
-//            System.out.println("port value: " + portfolioValue + "    intitialvalue:   " + strat.getInitialvalue());
-            if (portfolioValue < strat.getInitialvalue() * 0.8) {
+
+        if (strat.getProfitAndLoss() < strat.getInitialvalue() * .8) {
+            return true;
+        }
+
+        if (exitRule.equals("loss")) {
+            if (strat.getProfitAndLoss() < strat.getInitialvalue() * (1 - exitPercentage)) {
                 return true;
             }
-            if (exitPercentage != 20 && !exitRule.equals("loss")) {
-                if (exitRule.equals("loss")) {
-                    if (portfolioValue < strat.getInitialvalue() * 1.0 - (exitPercentage * .01)) {
-                        return true;
-                    }
-                } else {
-                    if (portfolioValue > strat.getInitialvalue() * 1.0 - (exitPercentage * .01)) {
-                        return true;
-                    }
-                }
+        }
+
+        if (exitRule.equals("profit")) {
+            if (strat.getProfitAndLoss() > strat.getInitialvalue() * (1 + exitPercentage)) {
+                return true;
             }
         }
 

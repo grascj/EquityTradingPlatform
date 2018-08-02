@@ -56,8 +56,8 @@ public class OrderReceiver {
     public void receiveMessage(Message message) throws Exception {
 
 
-//        Order o = xmlToBrokerMessage(((TextMessage) message).getText());
-
+        Order o = xmlToBrokerMessage(((TextMessage) message).getText());
+        orderService.writeOrder(o);
 //        Strategy s = strategyService.stratOnId(new ObjectId(message.getJMSCorrelationID()));
 //        System.out.println("Received transaction from "  + s.getName() + " buy " + o.getPrice() + " price:   " + o.isBuy());
 //        s.setProfitAndLoss(o.isBuy(), s.getStockQuantity(), o.getPrice());
