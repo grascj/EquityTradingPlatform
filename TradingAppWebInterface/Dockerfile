@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-EXPOSE 8084
+EXPOSE 8080
 
 CMD ["/opt/itrs/netprobe/netprobe.linux_64", "$APPNAME", "-port", "7036", "-nopassword", "&"]
 
