@@ -8,7 +8,7 @@ import {Strategy} from "../models/strategy";
 
 @Injectable()
 export class StratService {
-  private baseUrl = 'http://localhost:8082';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) { }
 
