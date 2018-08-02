@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class TradeService {
-  private baseUrl = 'http://localhost:8082';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) { }
 
