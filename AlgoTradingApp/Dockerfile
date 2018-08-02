@@ -1,4 +1,4 @@
-FROM docker.conygre.com:5000/java as build
+FROM dockerreg.training.local:5000/java as build
 
 WORKDIR /app
 
