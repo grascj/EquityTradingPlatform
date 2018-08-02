@@ -1,0 +1,4 @@
+
+docker run --name testmongo --restart=always -d -p 27017:27017 mongo mongod
+docker run -a STDOUT --link=testmongo -e DBHOST=testmongo -e DBNAME=team8_mongo -e ACTIVEMQ=localhost:8161 docker.conygre.com:5000/team8trader
+
