@@ -34,6 +34,7 @@ public abstract class Strategy {
 
     private Boolean lookingToBuy;
 
+
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Double profitAndLoss) {
         this.ticker = ticker;
         this.exitRule = exitRule;

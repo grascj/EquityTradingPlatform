@@ -30,7 +30,7 @@ public class TradeController {
     @GetMapping("/trades/{id}")
     public List<Trade> getTradesByResultAndId(@PathVariable("id") String id) {
         List<Trade> allTrades = new ArrayList<>();
-        repository.findByStrategyIdAndResult(id, "FILLED").forEach(allTrades::add);
+        repository.findByStrategyId(id).forEach(allTrades::add);
         return allTrades;
     }
 
@@ -40,7 +40,7 @@ public class TradeController {
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime anHrAgo = currentTime.minusHours(1);
         //System.out.println(currentTime.toString() + " and an hour ago: " + anHrAgo.toString());
-        repository.findByIdAndResultAndTimeStampBetween(id, "Filled", anHrAgo, currentTime).forEach(allTrades::add);
+        repository.findByIdAndAndTimeStampBetween(id, anHrAgo, currentTime).forEach(allTrades::add);
         //System.out.println("SIZE " + allTrades.size());
         return allTrades;
     }

@@ -18,15 +18,15 @@ export class StratService {
   }
 
   addStrat(strategy: Strategy) {
-    console.log("in servicew for add: " + strategy.ticker);
+    console.log("in servicew for add: " + strategy.ticker + "  " + strategy.name);
     return this.http.post(this.baseUrl + '/api/addStrat', strategy);
   }
 
-  deleteStrategy(id: String) {
-    this.http.delete(this.baseUrl + '/api/deleteStrat/'+id) .subscribe(res => {
-      console.log("post executed with response");
-    }, (err) => {
-      console.log(err);
-    });
+  disableStrategy(id: String, strat: Strategy) {
+    return this.http.put(this.baseUrl + '/api/disableStrat/'+id, strat);
+  }
+
+  updateName(strategy: Strategy, name: any) {
+    return this.http.put(this.baseUrl + '/api/changeName/'+strategy.id, name);
   }
 }

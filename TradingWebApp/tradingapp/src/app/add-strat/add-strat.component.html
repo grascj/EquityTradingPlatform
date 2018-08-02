@@ -1,4 +1,4 @@
-<div class="container" style="margin-bottom: 1.1em;" [class.toggled]="idToAdd" (idToAddChange)="updateFromChild($event)">
+<div class="container" style="margin-bottom: 1.1em;">
   <h3>Add Strategy</h3>
 
 
@@ -57,7 +57,7 @@
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
         <label class="mr-sm-2" for="exitRule">Exit Rule</label>
-        <select class="custom-select" id="exitRule" required [(ngModel)]="strategy.exitRule" name="exitRule">
+        <select  class="custom-select" id="exitRule" [(ngModel)]="strategy.exitRule" name="exitRule">
           <option value="profit">Profit</option>
           <option value="loss">Loss</option>
         </select>
@@ -67,10 +67,15 @@
 
       <div class="input-group mb-2 mr-sm-2 mb-sm-0">
         <label class="mr-sm-2" for="exitPercentage">Exit Rule Percentage</label>
-        <input type="text" class="form-control" id="exitPercentage" required [(ngModel)]="strategy.exitPercentage" name="exitPercentage" >
+        <input type="text" class="form-control" placeholder="Default 0.2 w. Loss" id="exitPercentage" [(ngModel)]="strategy.exitPercentage" name="exitPercentage" >
       </div>
 
-       <button type="submit" class="btn btn-success">Submit</button>
+      <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+        <label class="mr-sm-2" for="name">Custom Name</label>
+        <input type="text" class="form-control" placeholder="Optional" id="name" [(ngModel)]="strategy.name" name="name" >
+      </div>
+
+       <button type="submit" class="btn btn-sm btn-success">Create Strategy</button>
 
 
     </form>
@@ -79,3 +84,4 @@
 
 
 </div>
+

@@ -4,4 +4,6 @@ export class Strategy {
   stockQuantity: number;
   exitRule: string;
   exitPercentage: number;
+  exit: boolean;
+  name: string;
 }

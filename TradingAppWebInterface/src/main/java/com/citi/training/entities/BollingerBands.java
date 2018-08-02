@@ -11,8 +11,8 @@ public class BollingerBands extends Strategy {
     private Double standardDeviation;
     private Trend currentTrend;
 
-    public BollingerBands(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Integer avgSeconds, Double standardDeviation) {
-        super(ticker, stockQuantity, exitRule, exitPercentage);
+    public BollingerBands(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Integer avgSeconds, Double standardDeviation, String name) {
+        super(ticker, stockQuantity, exitRule, exitPercentage, name);
         this.avgSeconds = avgSeconds;
         this.standardDeviation = standardDeviation;
         this.currentTrend = currentTrend.FLAT;
