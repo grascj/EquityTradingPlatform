@@ -13,15 +13,15 @@ public class TwoMovingAverages extends Strategy implements Serializable {
     private Integer longAverageSeconds;
     private Trend currentTrend;
 
-    public TwoMovingAverages(String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds) {
-        super(ticker, stockQuanity, exitRule, exitPercentage);
+    public TwoMovingAverages(String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds, String name) {
+        super(ticker, stockQuanity, exitRule, exitPercentage, name);
         this.shortAverageSeconds = shortAverageSeconds;
         this.longAverageSeconds = longAverageSeconds;
         this.currentTrend = Trend.FLAT;
     }
 
     public TwoMovingAverages() {
-        super(null, null, null, null);
+        super(null, null, null, null, null);
     }
 
     public Trend getCurrentTrend() {

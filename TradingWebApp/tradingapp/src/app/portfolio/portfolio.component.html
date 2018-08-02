@@ -1,33 +1,79 @@
-<div class="container">
-  <h3>Your Portfolio</h3>
-
-  <div *ngIf="!chartIsLoading" style="margin: 0.1em;" width="100%">
-    <h5>Strategy P&amp;L</h5>
-    <canvas id="canvas" >{{ chart }}</canvas>
+<div class="contents" style="padding: 1em; height:80vh !important; overflow-y: scroll;">
+  <h3 >Your Portfolio</h3>
+  <div class="row topElement">
+    <div class="col col-md-6" style="height:80vh !important; overflow-y: scroll;">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Strategy Type</th>
+          <th scope="col">Name</th>
+          <th scope="col">Ticker</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Exit Rule</th>
+          <th scope="col">Exit %</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr *ngFor="let strat of stratObjs" scope="row">
+          <td *ngIf="strat.standardDeviation">Bollinger Bands</td> <td *ngIf="strat.longAverageSeconds">Two Moving Avgs</td>
+          <td *ngIf="!strat.name">
+            <button class="btn btn-sm btn-outline-primary" (click)="open(content, strat)">Set Name</button>
+          </td>
+          <td *ngIf="strat.name"> {{ strat.name }}</td>
+          <td>{{ strat.ticker }}</td>
+          <td>{{ strat.stockQuantity }}</td>
+          <td>{{ strat.exitRule }}</td>
+          <td>{{ strat.exitPercentage }}</td>
+          <!--<td *ngIf="!strat.exit">Disable</td>
+          <td *ngIf="strat.exit">Enable</td>-->
+          <td><button class="btn btn-sm btn-danger" (click)="disableStrat(strat.id)" [disabled]="strat.exit">Terminate</button></td>
+          <td><button class="btn btn-sm btn-primary" (click)="expandStrat(strat)">Expand</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!chartIsLoading" class="col col-md-6" >
+      <h5>{{ expandedStrat.name}} Strategy P&amp;L</h5>
+      <canvas id="canvas" >{{ chart }}</canvas>
+      <h6><strong>Details:</strong> {{expandedStrat.stockQuantity}} stocks of {{ expandedStrat.ticker}}; Exit at {{ expandedStrat.exitPercentage}} {{expandedStrat.exitRule}} </h6>
+      <h6>All Trades</h6>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Time</th>
+          <th scope="col">Buy/Sell</th>
+          <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr *ngFor="let order of orderObjs" scope="row">
+          <td>{{ order.timest }}</td>
+          <td *ngIf="order.buy"> Buy </td>
+          <td *ngIf="!order.buy"> Sell </td>
+          <td>{{ order.price }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
-
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">Strategy Type</th>
-      <th scope="col">Ticker</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Exit Rule</th>
-      <th scope="col">Percentage</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let strat of stratObjs" scope="row">
-      <td *ngIf="strat.standardDeviation">Bollinger Bands</td> <td *ngIf="strat.longAverageSeconds">Two Moving Avgs</td>
-      <td>{{ strat.ticker }}</td>
-      <td>{{ strat.stockQuantity }}</td>
-      <td>{{ strat.exitRule }}</td>
-      <td>{{ strat.exitPercentage }}</td>
-      <td><button class="btn btn-danger" (click)="deleteStrat(strat.id)">Disable</button></td>
-      <td><button class="btn btn-primary" (click)="expandStrat(strat.id)">Expand</button></td>
-    </tr>
-    </tbody>
-  </table>
 </div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Set Name</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d(null)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline" (ngSubmit)="prefNameForm.form.valid" #prefNameForm="ngForm">
+      <input type="text" class="form-control" id="prefName" required [(ngModel)]="prefName" name="prefName" >
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class=" btn-sm btn btn-outline-dark" (click)="c(prefName+ '')">Save</button>
+  </div>
+</ng-template>

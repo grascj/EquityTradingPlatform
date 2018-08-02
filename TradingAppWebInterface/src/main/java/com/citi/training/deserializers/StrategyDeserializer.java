@@ -25,20 +25,21 @@ public class StrategyDeserializer  extends StdDeserializer<Strategy> {
         int numStocks = Integer.parseInt(node.get("stockQuantity").asText());
         String exitRule = node.get("exitRule").asText();
         double exitPercentage = Double.parseDouble(node.get("exitPercentage").asText());
+        String name = node.get("name").asText();
 
         //if TwoMovingAverages
         if(node.has("shortAverageSeconds") && node.has("longAverageSeconds")) {
             int shortVal = Integer.parseInt(node.get("shortAverageSeconds").asText());
             int longVal = Integer.parseInt(node.get("longAverageSeconds").asText());
 
-            return new TwoMovingAverages(ticker, numStocks, exitRule, exitPercentage, shortVal, longVal);
+            return new TwoMovingAverages(ticker, numStocks, exitRule, exitPercentage, shortVal, longVal, name);
         }
         else {
             //must be bollinger
             int avgSec = Integer.parseInt(node.get("avgSeconds").asText());
             double std = Double.parseDouble(node.get("standardDeviation").asText());
 
-            return new BollingerBands(ticker, numStocks, exitRule, exitPercentage,  avgSec, std);
+            return new BollingerBands(ticker, numStocks, exitRule, exitPercentage,  avgSec, std, name);
         }
 
 
