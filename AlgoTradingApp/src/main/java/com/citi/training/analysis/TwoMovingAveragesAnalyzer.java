@@ -2,6 +2,7 @@ package com.citi.training.analysis;
 
 import com.citi.training.entities.*;
 import com.citi.training.misc.Action;
+import com.citi.training.misc.StockAction;
 import com.citi.training.misc.Trend;
 import com.citi.training.services.MarketUpdateService;
 import com.citi.training.services.StrategyService;
@@ -48,7 +49,8 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
             /**
              * Exit check
              */
-            if (shouldExit(strategy, current.getPrice(), strategy.getExitPercentage(), strategy.getExitRule()) || strategy.isExit()) {
+//            if (shouldExit(strategy, current.getPrice(), strategy.getExitPercentage(), strategy.getExitRule()) || strategy.isExit()) {
+            if (strategy.isExit() ){
                 strategy.setExit(true);
                 strategyService.writeStrategy(strat);
                 return null;
@@ -56,12 +58,19 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
             System.out.println(current.getPrice());
             order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, current.getPrice());
 
-            if (newTrend == newTrend.DOWNWARD && !strategy.getLookingToBuy()) { //SHORT CROSSED BELOW
+            if (newTrend == newTrend.DOWNWARD && strategy.getLookingToBuy() != StockAction.BUY) { //SHORT CROSSED BELOW
                 order.setBuy(false);
-                strategy.setLookingToBuy(true);
-            } else if (newTrend == Trend.UPWARD && strategy.getLookingToBuy()) { //SHORT CROSSED ABOVE
+                strategy.setLookingToBuy(StockAction.BUY);
+                strategy.setProfitAndLoss(order.isBuy(), strategy.getStockQuantity(), order.getPrice());
+                Trade t = new Trade(order, order.getResult(), strategy.getId().toString(), strategy.getProfitAndLoss());
+                tradeService.writeTrade(t);
+
+            } else if (newTrend == Trend.UPWARD && strategy.getLookingToBuy() != StockAction.SELL) { //SHORT CROSSED ABOVE
                 order.setBuy(true);
-                strategy.setLookingToBuy(false);
+                strategy.setLookingToBuy(StockAction.SELL);
+                strategy.setProfitAndLoss(order.isBuy(), strategy.getStockQuantity(), order.getPrice());
+                Trade t = new Trade(order, order.getResult(), strategy.getId().toString(), strategy.getProfitAndLoss());
+                tradeService.writeTrade(t);
 
             }
             strategyService.writeStrategy(strat);

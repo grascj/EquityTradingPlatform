@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Order {
     private boolean buy;
     private Double price;
-    private int size;
+    private Integer size;
     private String stock;
 
     @Id
@@ -69,13 +69,6 @@ public class Order {
         this.price = price;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
 
     public String getstock() {
         return stock;
@@ -100,6 +93,22 @@ public class Order {
 
     public void setStratId(ObjectId stratId) {
         this.stratId = stratId;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
     }
 
     public String getResult() {

@@ -5,6 +5,7 @@ import com.citi.training.entities.BollingerBands;
 import com.citi.training.entities.MarketUpdate;
 import com.citi.training.entities.Order;
 import com.citi.training.entities.TwoMovingAverages;
+import com.citi.training.misc.StockAction;
 import com.citi.training.misc.Trend;
 import com.citi.training.services.MarketUpdateService;
 import com.citi.training.services.StrategyService;
@@ -51,7 +52,7 @@ public class BollingerBandAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 60.0));
         BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
         bb.setId(new ObjectId());
-        bb.setLookingToBuy(false);
+        bb.setLookingToBuy(StockAction.SELL );
         //String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 
@@ -75,7 +76,7 @@ public class BollingerBandAnalyzerTest {
         Mockito.when(marketUpdateService.latestUpdateByTicker("goog")).thenReturn(new MarketUpdate(null, null, 30.5));
         BollingerBands bb = new BollingerBands("goog", 100, "test", 10.0, 10, 2.0);
         bb.setId(new ObjectId());
-        bb.setLookingToBuy(true);
+        bb.setLookingToBuy(StockAction.BUY);
         //String ticker, Integer stockQuanity, String exitRule, Double exitPercentage, Integer shortAverageSeconds, Integer longAverageSeconds
 
 

@@ -25,11 +25,7 @@ public class StrategyService {
     MongoTemplate mongoTemplate;
 
     public Strategy stratOnId(ObjectId id) {
-
-
-        Query q = new Query();
-        q.addCriteria(Criteria.where("_id").is(id));
-        Strategy s = mongoTemplate.findOne(q, Strategy.class);
+        Strategy s = strategyRepository.findOne(id);
         return s;
     }
 

@@ -55,16 +55,15 @@ public class OrderReceiver {
     @JmsListener(destination = "OrderBroker_Reply")
     public void receiveMessage(Message message) throws Exception {
 
-        System.out.println("Received transaction");
 
-        Order o = xmlToBrokerMessage(((TextMessage) message).getText());
+//        Order o = xmlToBrokerMessage(((TextMessage) message).getText());
 
-        Strategy s = strategyService.stratOnId(new ObjectId(message.getJMSCorrelationID()));
-
-        s.setProfitAndLoss(o.isBuy(), o.getSize(), o.getPrice());
-        Trade t = new Trade(o, o.getResult(), message.getJMSCorrelationID(), s.getProfitAndLoss());
-        tradeService.writeTrade(t);
-        strategyService.writeStrategy(s);
+//        Strategy s = strategyService.stratOnId(new ObjectId(message.getJMSCorrelationID()));
+//        System.out.println("Received transaction from "  + s.getName() + " buy " + o.getPrice() + " price:   " + o.isBuy());
+//        s.setProfitAndLoss(o.isBuy(), s.getStockQuantity(), o.getPrice());
+//        Trade t = new Trade(o, o.getResult(), message.getJMSCorrelationID(), s.getProfitAndLoss());
+//        tradeService.writeTrade(t);
+//        strategyService.writeStrategy(s);
 //        System.out.println(s.getLookingtoBuy);
     }
 

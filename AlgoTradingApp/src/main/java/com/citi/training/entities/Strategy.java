@@ -2,6 +2,8 @@ package com.citi.training.entities;
 
 
 import com.citi.training.misc.Action;
+import com.citi.training.misc.StockAction;
+import jdk.nashorn.internal.runtime.Undefined;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,10 +31,11 @@ public abstract class Strategy {
 
     private Double initialValue = 0.0;
 
+    private String name;
 
     private boolean exit = false;
 
-    private Boolean lookingToBuy;
+    private StockAction lookingToBuy = StockAction.UNDEFINED;
 
 
     public Strategy(String ticker, Integer stockQuantity, String exitRule, Double exitPercentage, Double profitAndLoss) {
@@ -45,7 +48,7 @@ public abstract class Strategy {
         this.holdingValue = 0.0;
         this.firstTrade = true;
         this.initialValue = 0.0;
-        this.lookingToBuy = true;
+        this.name = "";
 
     }
 
@@ -96,7 +99,45 @@ public abstract class Strategy {
         return profitAndLoss;
     }
 
+
+    public void setExitPercentage(Double exitPercentage) {
+        this.exitPercentage = exitPercentage;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public void setProfitAndLoss(Double profitAndLoss) {
+        this.profitAndLoss = profitAndLoss;
+    }
+
+    public boolean isFirstTrade() {
+        return firstTrade;
+    }
+
+    public void setFirstTrade(boolean firstTrade) {
+        this.firstTrade = firstTrade;
+    }
+
+    public Double getInitialValue() {
+        return initialValue;
+    }
+
+    public void setInitialValue(Double initialValue) {
+        this.initialValue = initialValue;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setProfitAndLoss(boolean buy, int quantity, double price) {
+        System.out.println("BUY " + buy + "quantity  " + quantity + " price + " + price);
         if (buy) {
             holdingValue = quantity * price;
             if (firstTrade) {
@@ -104,6 +145,7 @@ public abstract class Strategy {
                 initialValue = holdingValue;
                 firstTrade = false;
             } else {
+
                 cashValue = cashValue - holdingValue;
             }
 
@@ -119,7 +161,9 @@ public abstract class Strategy {
                 holdingValue = 0.0;
             }
         }
-        this.profitAndLoss = cashValue + holdingValue;
+        System.out.println("buy " + buy + "cash " + cashValue + "holding " + holdingValue + "total " + this.profitAndLoss);
+        profitAndLoss = holdingValue + cashValue;
+
     }
 
     public Double getHoldingValue() {
@@ -154,11 +198,11 @@ public abstract class Strategy {
         this.exit = exit;
     }
 
-    public Boolean getLookingToBuy() {
+    public StockAction getLookingToBuy() {
         return lookingToBuy;
     }
 
-    public void setLookingToBuy(Boolean lookingToBuy) {
+    public void setLookingToBuy(StockAction lookingToBuy) {
         this.lookingToBuy = lookingToBuy;
     }
 

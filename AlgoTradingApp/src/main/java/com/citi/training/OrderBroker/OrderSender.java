@@ -6,6 +6,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import com.citi.training.entities.Order;
+import com.citi.training.entities.Trade;
 import com.citi.training.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
@@ -29,7 +30,8 @@ public class OrderSender {
      * @param brokerMsg
      */
     public void send(Order brokerMsg) {
-        System.out.println("Sending a transaction.");
+        System.out.println("Sending a transaction from. price" + brokerMsg.getPrice() + " buy :   " + brokerMsg.isBuy());
+
 
         MessageCreator messageCreator = new MessageCreator() {
             @Override

@@ -2,6 +2,7 @@ package com.citi.training.analysis;
 
 import com.citi.training.entities.*;
 import com.citi.training.misc.Action;
+import com.citi.training.misc.StockAction;
 import com.citi.training.misc.Trend;
 import com.citi.training.services.MarketUpdateService;
 import com.citi.training.services.StrategyService;
@@ -17,6 +18,8 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
     @Autowired
     private StrategyService strategyService;
+    @Autowired
+    private TradeService tradeService;
 
 //    @Autowired
 //    private TradeService tradeService;
@@ -54,8 +57,11 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
 
         Double currentPrice = marketUpdateService.latestUpdateByTicker(strategy.getTicker()).getPrice();
-        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice + " looking to buy? " + strategy.getLookingToBuy());
-        if (shouldExit(strategy, currentPrice, strategy.getExitPercentage(), strategy.getExitRule()) || strategy.isExit()) {
+//        System.out.println("low :  " + lowStandardDeviation + " high: " + highStandardDeviation + " prie: " + currentPrice + " looking to buy? " + strategy.getLookingToBuy());
+//        if (shouldExit(strategy, currentPrice, strategy.getExitPercentage(), strategy.getExitRule()) || strategy.isExit()) {
+        if (strategy.isExit()) {
+
+
             strategy.setExit(true);
             strategyService.writeStrategy(strat);
             return null;
@@ -63,15 +69,22 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
 
         order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, currentPrice);
-        if (currentPrice > highStandardDeviation && !strategy.getLookingToBuy()) { //sell
+        if (currentPrice > highStandardDeviation && strategy.getLookingToBuy() != StockAction.BUY) { //sell
             order.setBuy(false);
-            strategy.setLookingToBuy(true);
+            strategy.setLookingToBuy(StockAction.BUY);
+
+            strategy.setProfitAndLoss(order.isBuy(), strategy.getStockQuantity(), order.getPrice());
+            Trade t = new Trade(order, order.getResult(), strategy.getId().toString(), strategy.getProfitAndLoss());
+            tradeService.writeTrade(t);
             strategyService.writeStrategy(strategy);
             return order;
 
-        } else if (currentPrice < lowStandardDeviation && strategy.getLookingToBuy()) { //buy
+        } else if (currentPrice < lowStandardDeviation && strategy.getLookingToBuy() != StockAction.SELL) { //buy
             order.setBuy(true);
-            strategy.setLookingToBuy(false);
+            strategy.setLookingToBuy(StockAction.SELL);
+            strategy.setProfitAndLoss(order.isBuy(), strategy.getStockQuantity(), order.getPrice());
+            Trade t = new Trade(order, order.getResult(), strategy.getId().toString(), strategy.getProfitAndLoss());
+            tradeService.writeTrade(t);
             strategyService.writeStrategy(strategy);
             return order;
 
