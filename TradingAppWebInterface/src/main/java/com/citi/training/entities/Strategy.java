@@ -31,7 +31,7 @@ public abstract class Strategy {
 
     private Boolean exit = false;
 
-    private Boolean lookingToBuy = true;
+    private String lookingToBuy;
 
     private String name;
 
@@ -96,8 +96,8 @@ public abstract class Strategy {
 
     public void setExit(Boolean exit) { this.exit = exit; }
 
-    public Boolean getLookingToBuy() {   return lookingToBuy;  }
+    public String getLookingToBuy() {   return lookingToBuy;  }
 
-    public void setLookingToBuy(Boolean lookingToBuy) {   this.lookingToBuy = lookingToBuy;  }
+    public void setLookingToBuy(String lookingToBuy) {   this.lookingToBuy = lookingToBuy;  }
 
 }
