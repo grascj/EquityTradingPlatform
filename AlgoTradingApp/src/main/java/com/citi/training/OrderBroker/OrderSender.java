@@ -30,7 +30,7 @@ public class OrderSender {
      * @param brokerMsg
      */
     public void send(Order brokerMsg) {
-        System.out.println("Sending a transaction from. price" + brokerMsg.getPrice() + " buy :   " + brokerMsg.isBuy());
+//        System.out.println("Sending a transaction from. price" + brokerMsg.getPrice() + " buy :   " + brokerMsg.isBuy());
 
 
         MessageCreator messageCreator = new MessageCreator() {

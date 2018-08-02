@@ -137,7 +137,7 @@ public abstract class Strategy {
     }
 
     public void setProfitAndLoss(boolean buy, int quantity, double price) {
-        System.out.println("BUY " + buy + "quantity  " + quantity + " price + " + price);
+//        System.out.println("BUY " + buy + "quantity  " + quantity + " price + " + price);
         if (buy) {
             holdingValue = quantity * price;
             if (firstTrade) {
@@ -161,7 +161,7 @@ public abstract class Strategy {
                 holdingValue = 0.0;
             }
         }
-        System.out.println("buy " + buy + "cash " + cashValue + "holding " + holdingValue + "total " + this.profitAndLoss);
+//        System.out.println("buy " + buy + "cash " + cashValue + "holding " + holdingValue + "total " + this.profitAndLoss);
         profitAndLoss = holdingValue + cashValue;
 
     }
