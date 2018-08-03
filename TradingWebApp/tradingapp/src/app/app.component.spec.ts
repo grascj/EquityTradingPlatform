@@ -1,27 +1,51 @@
-import { TestBed, async } from '@angular/core/testing';
+import {TestBed, async, ComponentFixture, inject} from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PortfolioComponent} from "./portfolio/portfolio.component";
+import {AddStratComponent} from "./add-strat/add-strat.component";
+import {StratService} from "./services/strat.service";
+import {TradeService} from "./services/trade.service";
+import {NgbDropdown, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+const stratsData  = require('./mockStratData.json');
+
 describe('AppComponent', () => {
+  let app: AppComponent;
+  let fixture : ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        HttpClientTestingModule,
+        NgbModule.forRoot()],
       declarations: [
-        AppComponent
+        AppComponent,
+    AddStratComponent,
+      PortfolioComponent
       ],
-    }).compileComponents();
+      providers: [StratService, TradeService, NgbDropdown]
+    }).compileComponents().then(
+      () => {
+        /*spyOn(stratService, 'fetchData').and.returnValue(Promise.resolve(stratsData));*/
+        fixture = TestBed.createComponent(AppComponent);
+        app = fixture.debugElement.componentInstance;
+        fixture.detectChanges();
+      }
+    );
   }));
+
+  describe(`FakeHttpClientResponses`, () => {
+
+
   it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
   it(`should have as title 'app'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
+    expect(app.title).toEqual('Equities Trading Platform');
   }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
-  }));
-});
+
+});});

@@ -31,7 +31,7 @@ public abstract class Strategy {
 
     private Boolean exit = false;
 
-    private String lookingToBuy;
+    private String lookingToBuy = null;
 
     private String name;
 
@@ -44,6 +44,7 @@ public abstract class Strategy {
         this.cashValue = 0.0;
         this.holdingValue = 0.0;
         this.name = name;
+
     }
 
     public String getName() {  return name;   }

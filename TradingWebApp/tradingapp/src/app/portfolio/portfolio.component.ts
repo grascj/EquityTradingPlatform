@@ -102,7 +102,7 @@ export class PortfolioComponent implements OnInit {
           datasets: [
             {
               data: pAndL,
-              borderColor: "#3cba9f",
+              borderColor: "#022d72",
               fill: false
             }
           ]
