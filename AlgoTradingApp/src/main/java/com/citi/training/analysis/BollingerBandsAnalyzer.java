@@ -52,6 +52,9 @@ public class BollingerBandsAnalyzer extends Analyzer {
 
         Double movingAvg = marketUpdateService.movingAverage(ticker, strategy.getAvgSeconds());
         Double standardDeviation = marketUpdateService.movingStandardDeviation(ticker, strategy.getAvgSeconds(), strategy.getStandardDeviation());
+        if (movingAvg == null || standardDeviation == null) {
+            return null;
+        }
         Double highStandardDeviation = movingAvg + standardDeviation * strategy.getStandardDeviation();
         Double lowStandardDeviation = movingAvg - standardDeviation * strategy.getStandardDeviation();
 
@@ -65,7 +68,7 @@ public class BollingerBandsAnalyzer extends Analyzer {
             strategyService.writeStrategy(strat);
             return null;
         }
-        System.out.println("price: " + currentPrice + "sd " + standardDeviation  + " moving average " +  movingAvg +  " high sd " + highStandardDeviation + " low sd " + lowStandardDeviation);
+        System.out.println("price: " + currentPrice + "sd " + standardDeviation + " moving average " + movingAvg + " high sd " + highStandardDeviation + " low sd " + lowStandardDeviation);
 
         order = new Order(strategy.getId(), strategy.getStockQuantity(), ticker, currentPrice);
         if (currentPrice > highStandardDeviation && strategy.getLookingToBuy() != StockAction.BUY) { //sell
