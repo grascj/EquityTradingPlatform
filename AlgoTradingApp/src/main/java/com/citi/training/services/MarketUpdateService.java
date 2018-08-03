@@ -48,7 +48,7 @@ public class MarketUpdateService {
                 Calculation.class
         );
 
-        return res.getUniqueMappedResult().getResult();
+        return res.getUniqueMappedResult() == null ? null : res.getUniqueMappedResult().getResult();
     }
 
     public Double movingStandardDeviation(String ticker, int timeInSeconds, Double standardDeviation) {
@@ -64,7 +64,7 @@ public class MarketUpdateService {
                 Calculation.class
         );
 
-        return res.getUniqueMappedResult().getResult() * standardDeviation;
+        return res.getUniqueMappedResult() == null ? null : res.getUniqueMappedResult().getResult() * standardDeviation;
     }
 
 
