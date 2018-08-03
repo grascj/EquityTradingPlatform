@@ -22,6 +22,25 @@ public class TwoMovingAveragesAnalyzer extends Analyzer {
     @Autowired
     private TradeService tradeService;
 
+    /**
+     * Utilized the data points gven by the two moving average strategy to determine if a stock is currently undervalued or overvalued.
+     * It then uses that information to either buy or sell or hold that stock.
+
+     * <p>
+     * Data Points from the strategy:
+     * 1. Short AvgSeconds: determines how far of an average that the analyzer should use for the short average
+     * 2. Long AvgSeconds: determines how far of an average that the analyzer should use for the long average
+
+     * <p>
+     * If the the short average is higher or lower than the long average the strat can  determine whether  or not buy or sell a stock:
+     * if short average is  higher than the long average
+     *     the stock is going to trend upwards so buy
+     * if short is lower than the high average
+     *      the stock is going to trend downwards tso sell
+     *
+     * @param strat the strategy that the analyzer will use to gather information and execute a trade
+     * @return
+     */
     @Override
     public Order analyze(Strategy strat) {
 
