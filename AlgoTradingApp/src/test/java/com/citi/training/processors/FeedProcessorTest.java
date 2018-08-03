@@ -11,8 +11,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -36,7 +38,7 @@ public class FeedProcessorTest {
 
     @Test
     public void testParseFeedResponse() {
-        List<String> tickers = new LinkedList<>();
+        Set<String> tickers = new HashSet<>();
         tickers.add("goog");
         tickers.add("appl");
         marketInformation.setTickers(tickers);
@@ -54,7 +56,7 @@ public class FeedProcessorTest {
 
     @Test
     public void testFormURL() {
-        List<String> tickers = new LinkedList<>();
+        Set<String> tickers = new HashSet<>();
         tickers.add("goog");
         tickers.add("appl");
         marketInformation.setTickers(tickers);

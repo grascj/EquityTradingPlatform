@@ -4,8 +4,11 @@ package com.citi.training.misc;
 import com.citi.training.entities.Strategy;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class MarketInformation {
@@ -17,7 +20,7 @@ public class MarketInformation {
         return strategies;
     }
 
-    private static List<String> tickers = new LinkedList();
+    private static Set<String> tickers = ConcurrentHashMap.newKeySet();
     static {
         tickers.add("aapl");
         tickers.add("goog");
@@ -27,11 +30,11 @@ public class MarketInformation {
     }
 
 
-    public static List<String> getTickers() {
+    public static Set<String> getTickers() {
         return tickers;
     }
 
-    public static void setTickers(List<String> tickers) {
+    public static void setTickers(Set<String> tickers) {
         MarketInformation.tickers = tickers;
     }
 

@@ -28,19 +28,21 @@ public class StrategyProcessor {
     StrategyService strategyService;
 
     @Autowired
+    MarketInformation marketInformation;
+
+    @Autowired
     OrderSender orderSender;
 
 
     @Scheduled(fixedDelay = 2500)
     public void executeStrategies(){
 
-//        List<Strategy> li = new LinkedList<>();
-//        li.add(new BollingerBands("goog", 1.1));
-//        li.add(new TwoMovingAverages("aapl", 10, 30));
-//        strategyService.writeStrategies(li);
-//        strategyService.getStrategies().parallelStream().forEach(analysisExecutor::execute);
+        strategyService.getStrategies().stream().forEach(x -> marketInformation.getTickers().add(x.getTicker()));
 
-        strategyService.getStrategies().parallelStream().map(analysisExecutor::execute).filter(Objects::nonNull).forEach(orderSender::send);
+        strategyService.getStrategies().parallelStream()
+                .map(analysisExecutor::execute)
+                .filter(Objects::nonNull)
+                .forEach(orderSender::send);
 }
 
 
