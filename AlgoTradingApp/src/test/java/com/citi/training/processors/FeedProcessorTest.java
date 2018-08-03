@@ -2,6 +2,7 @@ package com.citi.training.processors;
 
 import com.citi.training.misc.MarketInformation;
 import com.citi.training.services.MarketUpdateService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -34,17 +35,34 @@ public class FeedProcessorTest {
 
 
     @Test
-    public void pingFeed() {
+    public void testParseFeedResponse() {
         List<String> tickers = new LinkedList<>();
         tickers.add("goog");
         tickers.add("appl");
-        //Mockito.when(marketInformation.getTickers()).thenReturn(tickers);
+        marketInformation.setTickers(tickers);
 
 
     }
 
+    /*
+        public List<MarketUpdate> parseFeedResponse(String resp){
+        Scanner respScanner = new Scanner(resp);
+        LocalDateTime timestamp = LocalDateTime.now();
+        return marketInformation.getTickers().stream().map(x -> new MarketUpdate(timestamp, x, respScanner.nextDouble())).collect(Collectors.toList());
+    }
+     */
 
     @Test
-    public void parseFeedResponse() {
+    public void testFormURL() {
+        List<String> tickers = new LinkedList<>();
+        tickers.add("goog");
+        tickers.add("appl");
+        marketInformation.setTickers(tickers);
+
+        String res = feedProcessor.formURL();
+
+        Assert.assertEquals(res, feedProcessor.feedURL+"?s=goog,appl&f=p0");
     }
+
+
 }
